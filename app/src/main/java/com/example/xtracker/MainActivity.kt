@@ -44,3 +44,9 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+@Preview
+@Composable
+fun testBranchOrhan(){
+    Text(text = "Something")
+}
