@@ -134,7 +134,7 @@ fun Dashboard(){
             }
             Divider(modifier = Modifier.padding(15.dp))
 
-            Text(text = "Attendance", fontSize = 20.sp,modifier = Modifier.align(Alignment.Start))
+            Text(text = "Category", fontSize = 20.sp,modifier = Modifier.align(Alignment.Start))
 
             if(showDate){
                 //format date from calendar to String
@@ -207,7 +207,33 @@ fun CategoryCard(category: Category){
 
         )
         {
-
+            Image(
+                painter = painterResource(id = category.image),
+                contentDescription = "Category",
+                modifier = Modifier
+                    .weight(1f)
+                    .height(70.dp)
+                    .align(Alignment.CenterVertically),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+            Column(modifier = Modifier.weight(3f),){
+                Text(text = category.name, fontSize = 18.sp)
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = category.amount.toString() + "BAM",
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    //val date = category.date
+                    //Text(text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}",fontSize = 10.sp,
+                    //    fontWeight = FontWeight.Light)
+                }
+            }
         }
     }
 }
