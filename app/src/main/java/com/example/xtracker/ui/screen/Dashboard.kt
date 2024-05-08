@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,6 +61,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -91,9 +93,24 @@ fun Dashboard(){
             .fillMaxSize()
             .background(color = background) // Apply the background color here
     ){
-        val state = rememberDatePickerState()
-        var openCalendar by remember { mutableStateOf(false) }
-        var showDate by remember { mutableStateOf(false) }
+        //val state = rememberDatePickerState()
+        //var openCalendar by remember { mutableStateOf(false) }
+        //var showDate by remember { mutableStateOf(false) }
+
+        val logo: Painter = painterResource(id = R.drawable.logo)
+
+        // Define what should happen when the menu is clicked
+        val onMenuClick: () -> Unit = {
+            // Handle the menu click action here
+            // For example, you can open a menu or navigate to another screen
+        }
+
+        // Now, call the Footer composable and pass the logo and onMenuClick lambda
+        Footer(logo = logo, onMenuClick = onMenuClick)
+
+        Spacer(modifier = Modifier
+            .height(50.dp)
+        )
 
         Column(
             modifier = Modifier
@@ -101,7 +118,7 @@ fun Dashboard(){
                 .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            /*
             Icon(
                 Icons.Default.DateRange,
                 contentDescription = null,
@@ -109,7 +126,10 @@ fun Dashboard(){
                     .clickable { openCalendar = true }
                     .align(Alignment.Start)
             )
+
+             */
             Spacer(modifier = Modifier.height(10.dp))
+            /*
             if(openCalendar){
                 DatePickerDialog(
                     onDismissRequest = { openCalendar = false },
@@ -126,6 +146,9 @@ fun Dashboard(){
                 }
             }
 
+             */
+            Spacer(modifier = Modifier.height(30.dp))
+
             Text(text = "Types", fontSize = 20.sp, modifier = Modifier.align(Alignment.Start))
             LazyRow {
                 items(TypeOBJ.types) { type ->
@@ -136,6 +159,7 @@ fun Dashboard(){
 
             Text(text = "Last transactions", fontSize = 20.sp,modifier = Modifier.align(Alignment.Start))
 
+            /*
             if(showDate){
                 //format date from calendar to String
                 val formatter: SimpleDateFormat =  SimpleDateFormat("yyyy-MM-dd")
@@ -144,6 +168,8 @@ fun Dashboard(){
                 //format date from string to LocalDate
                 Text(text = "${LocalDate.parse(dateString).year.toString()} ${LocalDate.parse(dateString).month.toString()} ${LocalDate.parse(dateString).dayOfMonth.toString()}")
             }
+            */
+
 
             LazyColumn {
                 items(CategoryOBJ.categories){
@@ -234,6 +260,40 @@ fun CategoryCard(category: Category){
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Footer(
+    logo: Painter,
+    onMenuClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "App Logo",
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Icon(
+            imageVector = Icons.Default.Menu,
+            contentDescription = "Menu",
+            tint = Color.Black,
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { onMenuClick() }
+        )
+
     }
 }
 
