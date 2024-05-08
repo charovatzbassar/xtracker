@@ -134,7 +134,7 @@ fun Dashboard(){
             }
             Divider(modifier = Modifier.padding(15.dp))
 
-            Text(text = "Category", fontSize = 20.sp,modifier = Modifier.align(Alignment.Start))
+            Text(text = "Last transactions", fontSize = 20.sp,modifier = Modifier.align(Alignment.Start))
 
             if(showDate){
                 //format date from calendar to String
@@ -146,9 +146,9 @@ fun Dashboard(){
             }
 
             LazyColumn {
-                items(TypeOBJ.types){
-                        types ->
-                    TypeCard(type = types) //CategoriesCard --> kartica
+                items(CategoryOBJ.categories){
+                        category ->
+                    CategoryCard(category = category) //CategoriesCard --> kartica
                 }
             }
         }
@@ -202,9 +202,8 @@ fun CategoryCard(category: Category){
     ){
         Row(
             verticalAlignment = Alignment.Top,
-            //horizontalArrangement =  = Arrangement.Start,
-            //modifier = Modifier.padding(top=5.dp, bottom = 5.dp, start = 5.dp, end = 10.dp)
-
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.padding(top=5.dp, bottom = 5.dp, start = 5.dp, end = 10.dp)
         )
         {
             Image(
@@ -230,8 +229,8 @@ fun CategoryCard(category: Category){
                     )
                     Spacer(modifier = Modifier.padding(5.dp))
                     //val date = category.date
-                    //Text(text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}",fontSize = 10.sp,
-                    //    fontWeight = FontWeight.Light)
+                    Text(text = category.date.toString() ,fontSize = 10.sp,
+                    fontWeight = FontWeight.Light)
                 }
             }
         }
