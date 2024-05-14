@@ -1,4 +1,4 @@
-package com.plcoding.xtracker
+package com.example.xtracker
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.rememberCoroutineScope
-import com.plcoding.xtracker.ui.theme.NavigationDrawerComposeTheme
+import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.plcoding.xtracker">
+    package="com.example.xtracker">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavigationDrawerCompose">
         <activity
-            android:name="com.plcoding.xtracker.MainActivity"
+            android:name="com.example.xtracker.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.NavigationDrawerCompose">
             <intent-filter>

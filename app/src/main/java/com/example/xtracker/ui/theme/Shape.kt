@@ -1,4 +1,4 @@
-package com.plcoding.xtracker.ui.theme
+package com.example.xtracker.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

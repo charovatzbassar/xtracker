@@ -1,4 +1,4 @@
-package com.plcoding.xtracker.ui.theme
+package com.example.xtracker.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

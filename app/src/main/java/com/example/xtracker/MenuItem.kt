@@ -1,4 +1,4 @@
-package com.plcoding.xtracker
+package com.example.xtracker
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

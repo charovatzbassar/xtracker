@@ -1,4 +1,4 @@
-package com.plcoding.xtracker
+package com.example.xtracker
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
