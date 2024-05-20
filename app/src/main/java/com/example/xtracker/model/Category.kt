@@ -6,5 +6,7 @@ import androidx.annotation.DrawableRes
 data class Category(
     val id : Int,
     val name : String,
-    @DrawableRes var icon : Int
+    @DrawableRes var icon : Int?
 )
+
+
