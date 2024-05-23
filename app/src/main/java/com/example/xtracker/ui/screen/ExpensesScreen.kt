@@ -32,13 +32,18 @@ fun ExpensesScreen() {
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Total: $totalExpenses",
-            fontSize = 24.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
+            color = Color(0xFF3F51B5),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Divider(modifier = Modifier.padding(vertical = 10.dp))
 
         LazyColumn(
@@ -57,9 +62,9 @@ fun ExpenseItem(transaction: Transaction) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Cyan,
+            containerColor = Color(0xFFB39DDB),
         )
     ) {
         Row(
@@ -76,7 +81,8 @@ fun ExpenseItem(transaction: Transaction) {
             )
             Text(
                 text = "$${transaction.amount}",
-                fontSize = 18.sp
+                fontSize = 22.sp,
+                color = Color.Red
             )
         }
     }
