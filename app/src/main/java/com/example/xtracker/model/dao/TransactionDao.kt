@@ -42,4 +42,7 @@ interface TransactionDao {
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID")
     suspend fun getTotalForCategory(categoryID: Int): Flow<Int>
+
+    @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID AND type = :type")
+    suspend fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int>
 }

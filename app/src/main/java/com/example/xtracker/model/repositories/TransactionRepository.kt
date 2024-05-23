@@ -22,4 +22,5 @@ class TransactionRepository(private val transactionDao: TransactionDao): BaseRep
     suspend fun getTotalForCategory(categoryID: Int): Flow<Int> = transactionDao.getTotalForCategory(categoryID)
     suspend fun getTransactionsByType(type: TransactionType): Flow<List<Transaction>> = transactionDao.getTransactionsByType(type)
     suspend fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction>> = transactionDao.getTransactionsByCategory(categoryID)
+    suspend fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int> = transactionDao.getTotalForCategoryAndType(categoryID, type)
 }
