@@ -23,26 +23,26 @@ interface TransactionDao {
     suspend fun delete(transaction: Transaction)
 
     @Query("SELECT * FROM `Transaction`")
-    suspend fun getTransactions(): Flow<List<Transaction>>
+    fun getTransactions(): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE transactionID = :id")
-    suspend fun getTransaction(id: Int): Flow<Transaction>
+    fun getTransaction(id: Int): Flow<Transaction>
 
     @Query("SELECT * FROM `Transaction` WHERE type = :type")
-    suspend fun getTransactionsByType(type: TransactionType): Flow<List<Transaction>>
+    fun getTransactionsByType(type: TransactionType): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE categoryID = :categoryID")
-    suspend fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction>>
+    fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction>>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction`")
-    suspend fun getTotal(): Flow<Int>
+    fun getTotal(): Flow<Int>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE type = :type")
-    suspend fun getTotalForType(type: TransactionType): Flow<Int>
+    fun getTotalForType(type: TransactionType): Flow<Int>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID")
-    suspend fun getTotalForCategory(categoryID: Int): Flow<Int>
+    fun getTotalForCategory(categoryID: Int): Flow<Int>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID AND type = :type")
-    suspend fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int>
+    fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int>
 }

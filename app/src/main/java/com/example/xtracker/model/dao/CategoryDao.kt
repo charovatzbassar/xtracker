@@ -21,8 +21,8 @@ interface CategoryDao {
     suspend fun delete(category: Category)
 
     @Query("SELECT * FROM Category")
-    suspend fun getCategories(): Flow<List<Category>>
+    fun getCategories(): Flow<List<Category>>
 
     @Query("SELECT * FROM Category WHERE categoryID = :id")
-    suspend fun getCategory(id: Int): Flow<Category>
+    fun getCategory(id: Int): Flow<Category>
 }
