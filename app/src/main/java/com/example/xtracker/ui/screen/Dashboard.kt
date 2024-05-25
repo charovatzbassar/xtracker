@@ -2,6 +2,7 @@ package com.example.xtracker.ui.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,9 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.xtracker.model.Transaction
 import com.example.xtracker.model.Transactions
 import java.time.LocalDate
@@ -32,7 +38,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Dashboard(){
+fun Dashboard(navController: NavHostController){
     val income = 100
     val expense = 200
     val savings = 500
@@ -54,7 +60,18 @@ fun Dashboard(){
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){
             items(items) { item ->
-                TotalCard(title = item.first, amount = item.second, displayAmount = item.third)
+                TotalCard(
+                    title = item.first,
+                    amount = item.second,
+                    displayAmount = item.third,
+                    onClick = {
+                        when (item.first) {
+                            "Income" -> navController.navigate("income")
+                            "Expenses" -> navController.navigate("expenses")
+                            "Savings" -> navController.navigate("savings")
+                        }
+                    }
+                )
             }
         }
 
@@ -78,7 +95,8 @@ fun Dashboard(){
 @Preview(showBackground = true)
 @Composable
 fun DashboardPreview(){
-    Dashboard()
+    val navController = rememberNavController()
+    Dashboard(navController = navController)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -132,12 +150,13 @@ fun TransactionCard(transaction : Transaction){
 }
 
 @Composable
-fun TotalCard(title:String, amount: Int, displayAmount: String){
+fun TotalCard(title:String, amount: Int, displayAmount: String, onClick: () -> Unit){
     Card(
         modifier = Modifier
             .height(110.dp)
             .width(150.dp)
-            .padding(5.dp),
+            .padding(5.dp)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp)
     ){
         Column(
@@ -151,5 +170,16 @@ fun TotalCard(title:String, amount: Int, displayAmount: String){
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = displayAmount, color = Color.White, fontSize = 16.sp)
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun MyAppNavHost(navController: NavHostController = rememberNavController()) {
+    NavHost(navController, startDestination = "dashboard") {
+        composable("dashboard") { }
+        composable("income") {  }
+        composable("expenses") { }
+        composable("savings") {  }
     }
 }

@@ -110,10 +110,10 @@ class MainActivity : ComponentActivity() {
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
                                         //Text(text = "Dashboard")
-                                        Dashboard()
+                                        Dashboard(navController = navController)
                                     }
                                     composable("expenses") {
-                                        Text(text = "Expenses")
+                                        Text(text = "Expenses that I made for testing purposes")
                                     }
                                     composable("income") {
                                         Text(text = "Income")
