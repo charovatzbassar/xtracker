@@ -12,6 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
@@ -52,19 +55,19 @@ class MainActivity : ComponentActivity() {
                                             id = "dashboard",
                                             title = "Dashboard",
                                             contentDescription = "Go to dashboard screen",
-                                            icon = Icons.Default.DateRange
+                                            icon = Icons.Default.Home
                                         ),
                                         MenuItem(
                                             id = "income",
                                             title = "Income",
                                             contentDescription = "Go to income screen",
-                                            icon = Icons.Default.Email
+                                            icon = Icons.Default.KeyboardArrowUp
                                         ),
                                         MenuItem(
                                             id = "expenses",
                                             title = "Expenses",
                                             contentDescription = "Go to expenses screen",
-                                            icon = Icons.Default.ShoppingCart
+                                            icon = Icons.Default.KeyboardArrowDown
                                         ),
                                         MenuItem(
                                             id = "savings",
