@@ -1,13 +1,15 @@
 package com.example.xtracker
 
 import MyAppBar
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -23,10 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.xtracker.ui.screen.AddEntryScreen
+import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,6 +72,12 @@ class MainActivity : ComponentActivity() {
                                             contentDescription = "Go to savings screen",
                                             icon = Icons.Default.Lock
                                         ),
+                                        MenuItem(
+                                            id = "add",
+                                            title = "Add Entry",
+                                            contentDescription = "Go to add entry screen",
+                                            icon = Icons.Default.Add
+                                        ),
                                     ),
                                     onItemClick = {
                                         println("Clicked on ${it.id}")
@@ -95,7 +106,8 @@ class MainActivity : ComponentActivity() {
                             content = { innerPadding ->
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
-                                        Text(text = "Dashboard")
+                                        //Text(text = "Dashboard")
+                                        Dashboard()
                                     }
                                     composable("expenses") {
                                         Text(text = "Expenses")
@@ -105,6 +117,9 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable("savings") {
                                         Text(text = "Savings")
+                                    }
+                                    composable("add"){
+                                        AddEntryScreen()
                                     }
                                 }
                             }
