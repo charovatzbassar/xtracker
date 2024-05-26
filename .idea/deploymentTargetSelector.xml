@@ -29,6 +29,14 @@
       </SelectionState>
       <SelectionState runConfigName="ExpensesScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-05-26T17:13:33.851812506Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/home/alejna/.android/avd/Pixel_8_Pro_API_UpsideDownCakePrivacySandbox.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

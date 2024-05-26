@@ -29,6 +29,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.xtracker.ui.screen.IncomeScreen
 import com.example.myapplication.ui.screen.ExpensesScreen
 import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.screen.AddEntryScreen
@@ -126,7 +127,7 @@ class MainActivity : ComponentActivity() {
 
                                     }
                                     composable("income") {
-                                        Text(text = "Income")
+                                        IncomeScreen()
                                     }
                                     composable("savings") {
                                         SavingsScreen()
