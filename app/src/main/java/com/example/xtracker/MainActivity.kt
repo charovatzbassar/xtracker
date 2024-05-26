@@ -29,6 +29,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.ui.screen.ExpensesScreen
+import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
@@ -120,13 +122,14 @@ class MainActivity : ComponentActivity() {
                                         Dashboard(navController = navController)
                                     }
                                     composable("expenses") {
-                                        Text(text = "Expenses that I made for testing purposes")
+                                        ExpensesScreen()
+
                                     }
                                     composable("income") {
                                         Text(text = "Income")
                                     }
                                     composable("savings") {
-                                        Text(text = "Savings")
+                                        SavingsScreen()
                                     }
                                     composable("add"){
                                         AddEntryScreen()
