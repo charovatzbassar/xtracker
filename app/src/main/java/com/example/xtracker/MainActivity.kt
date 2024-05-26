@@ -18,12 +18,18 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.xtracker.model.XTrackerDatabase
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-                ModalNavigationDrawer(
+                    ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
@@ -72,7 +78,6 @@ class MainActivity : ComponentActivity() {
                                         println("Clicked on ${it.id}")
                                         navController.navigate(it.id)
                                         scope.launch {
-                                            println("Close drawer")
                                             drawerState.close()
                                         }
                                     }
@@ -86,7 +91,6 @@ class MainActivity : ComponentActivity() {
                                 MyAppBar(
                                     onNavigationIconClick = {
                                         scope.launch {
-                                            println("Open drawer")
                                             drawerState.open()
                                         }
                                     }
