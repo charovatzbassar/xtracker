@@ -14,7 +14,7 @@ object Transactions {
         Transaction(10, 200.0, entertainmentCategory, "2024-05-10", Type.EXPENSE),
         // Savings Transactions (we rich)
         Transaction(11, 5000.0, savingsCategory, "2024-05-11", Type.SAVING),
-        Transaction(12, 300.0, savingsCategory, "2024-05-12", Type.SAVING)
+        Transaction(12, 300.0, savingsCategory, "2024-05-12", Type.SAVING),
         Transaction(10, -100.0, entertainmentCategory, "2024-05-10", Type.EXPENSE)
     )
 }
