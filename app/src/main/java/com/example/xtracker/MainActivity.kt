@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.screen.ExpensesScreen
+import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
 import kotlinx.coroutines.launch
 
@@ -105,7 +106,7 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "Income")
                                     }
                                     composable("savings") {
-                                        Text(text = "Savings")
+                                        SavingsScreen()
                                     }
                                 }
                             }

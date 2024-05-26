@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.xtracker.ui.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesScreen() {
-    var totalExpenses by remember { mutableDoubleStateOf(0.0) }
+fun SavingsScreen() {
+    var totalSavings by remember { mutableDoubleStateOf(0.0) }
 
     LaunchedEffect(Unit) {
-        totalExpenses = Transactions.transactions.filter { it.type == Type.EXPENSE }
+        totalSavings = Transactions.transactions.filter { it.type == Type.SAVING }
             .sumOf { it.amount }
     }
 
@@ -39,7 +39,7 @@ fun ExpensesScreen() {
     ) {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Total: $totalExpenses",
+            text = "Total Savings: $totalSavings",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF3F51B5),
@@ -52,8 +52,8 @@ fun ExpensesScreen() {
             contentPadding = PaddingValues(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(Transactions.transactions.filter { it.type == Type.EXPENSE }.sortedByDescending { LocalDate.parse(it.date) }) { transaction ->
-                ExpenseItem(transaction)
+            items(Transactions.transactions.filter { it.type == Type.SAVING }) { transaction ->
+                SavingsItem(transaction)
             }
         }
     }
@@ -61,12 +61,12 @@ fun ExpensesScreen() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ExpenseItem(transaction: Transaction) {
+fun SavingsItem(transaction: Transaction) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val date = LocalDate.parse(transaction.date, formatter)
 
-    val cardBackgroundColor = Color(0xFFE0F7FA)
-    val expenseAmountColor = Color(0xFFF08080)
+    val cardBackgroundColor = Color(0xFFE0F7FA) // Light Yellow for savings
+    val savingsAmountColor = Color(0xFFFFA000) // Amber for the amount text
 
     Card(
         modifier = Modifier
@@ -88,16 +88,16 @@ fun ExpenseItem(transaction: Transaction) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = transaction.amount.toString() + " USD",
+                    text = "${transaction.amount} USD",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = expenseAmountColor
+                    color = savingsAmountColor
                 )
                 Text(
-                    text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}",
+                    text = "${date.month.value}.${date.dayOfMonth}.${date.year}",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Light,
-                    color = Color.Black
+                    color = Color.Gray
                 )
                 Text(
                     text = transaction.category.name,
@@ -113,6 +113,6 @@ fun ExpenseItem(transaction: Transaction) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun ExpensesScreenPreview() {
-    ExpensesScreen()
+fun SavingsScreenPreview() {
+    SavingsScreen()
 }
