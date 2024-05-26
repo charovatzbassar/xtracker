@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,7 +17,10 @@ import androidx.compose.ui.unit.sp
 import com.example.xtracker.model.Transaction
 import com.example.xtracker.model.Transactions
 import com.example.xtracker.model.Type
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen() {
@@ -32,16 +37,13 @@ fun ExpensesScreen() {
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Total: $totalExpenses",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF3F51B5),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(20.dp))
         Divider(modifier = Modifier.padding(vertical = 10.dp))
@@ -50,21 +52,28 @@ fun ExpensesScreen() {
             contentPadding = PaddingValues(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(Transactions.transactions.filter { it.type == Type.EXPENSE }) { transaction ->
+            items(Transactions.transactions.filter { it.type == Type.EXPENSE }.sortedByDescending { LocalDate.parse(it.date) }) { transaction ->
                 ExpenseItem(transaction)
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExpenseItem(transaction: Transaction) {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val date = LocalDate.parse(transaction.date, formatter)
+
+    val cardBackgroundColor = Color(0xFFE0F7FA)
+    val expenseAmountColor = Color(0xFFF08080)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(5.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFB39DDB),
+            containerColor = cardBackgroundColor,
         )
     ) {
         Row(
@@ -74,20 +83,34 @@ fun ExpenseItem(transaction: Transaction) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = transaction.category.name,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "$${transaction.amount}",
-                fontSize = 22.sp,
-                color = Color.Red
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = transaction.amount.toString() + " USD",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = expenseAmountColor
+                )
+                Text(
+                    text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    color = Color.Black
+                )
+                Text(
+                    text = transaction.category.name,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.DarkGray
+                )
+            }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ExpensesScreenPreview() {
