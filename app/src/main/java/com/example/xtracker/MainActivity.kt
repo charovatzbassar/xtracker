@@ -46,12 +46,9 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-
-
 
         setContent {
             NavigationDrawerComposeTheme {
@@ -99,7 +96,6 @@ class MainActivity : ComponentActivity() {
                                         ),
                                     ),
                                     onItemClick = {
-                                        println("Clicked on ${it.id}")
                                         navController.navigate(it.id)
                                         scope.launch {
                                             drawerState.close()
@@ -123,12 +119,10 @@ class MainActivity : ComponentActivity() {
                             content = { innerPadding ->
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
-                                        //Text(text = "Dashboard")
                                         Dashboard(navController = navController)
                                     }
                                     composable("expenses") {
                                         ExpensesScreen()
-
                                     }
                                     composable("income") {
                                         IncomeScreen()
