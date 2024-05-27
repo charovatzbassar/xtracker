@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.xtracker.model.TransactionType
 import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
 import java.time.LocalDate
@@ -38,9 +39,9 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Dashboard(navController: NavHostController, transactionViewModel: TransactionViewModel?){
-    val income = 100
-    val expense = 200
-    val savings = 500
+    val income = transactionViewModel?.totalIncomeState
+    val expense = transactionViewModel?.totalExpenseState
+    val savings = transactionViewModel?.totalSavingState
 
     val items = listOf(
         Triple("Income", income, income.toString()),
@@ -151,7 +152,7 @@ fun TransactionCard(transaction : TransactionDetails?){
 }
 
 @Composable
-fun TotalCard(title:String, amount: Int, displayAmount: String, onClick: () -> Unit){
+fun TotalCard(title:String, amount: Double?, displayAmount: String, onClick: () -> Unit){
     Card(
         modifier = Modifier
             .height(110.dp)

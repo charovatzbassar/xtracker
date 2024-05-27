@@ -11,7 +11,7 @@ data class CategoryDetails(
 
 
 data class TransactionUIState(
-    val transactions: List<TransactionDetails?> = emptyList()
+    val transactions: List<TransactionDetails?> = emptyList(),
 )
 
 fun TransactionDetails.toTransaction(): Transaction = Transaction(

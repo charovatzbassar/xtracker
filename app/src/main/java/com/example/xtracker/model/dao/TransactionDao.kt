@@ -29,20 +29,20 @@ interface TransactionDao {
     fun getTransaction(id: Int): Flow<Transaction>
 
     @Query("SELECT * FROM `Transaction` WHERE type = :type")
-    fun getTransactionsByType(type: TransactionType): Flow<List<Transaction>>
+    fun getTransactionsByType(type: String): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE categoryID = :categoryID")
     fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction>>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction`")
-    fun getTotal(): Flow<Int>
+    fun getTotal(): Flow<Double>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE type = :type")
-    fun getTotalForType(type: TransactionType): Flow<Int>
+    fun getTotalForType(type: String): Flow<Double>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID")
-    fun getTotalForCategory(categoryID: Int): Flow<Int>
+    fun getTotalForCategory(categoryID: Int): Flow<Double>
 
     @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE categoryID = :categoryID AND type = :type")
-    fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int>
+    fun getTotalForCategoryAndType(categoryID: Int, type: String): Flow<Double>
 }

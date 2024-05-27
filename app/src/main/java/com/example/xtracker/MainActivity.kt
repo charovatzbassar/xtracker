@@ -29,6 +29,7 @@ import com.example.xtracker.ui.screen.IncomeScreen
 import com.example.xtracker.ui.screen.ExpensesScreen
 import com.example.xtracker.model.AppContainer
 import com.example.xtracker.model.AppDataContainer
+import com.example.xtracker.model.TransactionType
 import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
@@ -44,6 +45,9 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+        transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
+        transactionViewModel.getTotalForType(TransactionType.INCOME.type)
+        transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
 
 
         super.onCreate(savedInstanceState)
@@ -117,6 +121,7 @@ class MainActivity : ComponentActivity() {
                             content = { innerPadding ->
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
+                                        println(transactionViewModel.totalIncomeState)
                                         Dashboard(navController = navController, transactionViewModel = transactionViewModel)
                                     }
                                     composable("expenses") {
