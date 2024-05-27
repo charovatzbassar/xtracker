@@ -35,18 +35,26 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.xtracker.ui.screen.IncomeScreen
 import com.example.myapplication.ui.screen.ExpensesScreen
+import com.example.xtracker.model.AppContainer
+import com.example.xtracker.model.AppDataContainer
 import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.model.XTrackerDatabase
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
+import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    lateinit var container: AppContainer
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        container = AppDataContainer(this)
         installSplashScreen()
+
+        var transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+
 
         super.onCreate(savedInstanceState)
 
@@ -119,6 +127,7 @@ class MainActivity : ComponentActivity() {
                             content = { innerPadding ->
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
+                                        println(transactionViewModel.transactionUIState.transactions)
                                         Dashboard(navController = navController)
                                     }
                                     composable("expenses") {
