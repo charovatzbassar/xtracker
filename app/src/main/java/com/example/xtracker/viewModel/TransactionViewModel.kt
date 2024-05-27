@@ -18,7 +18,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
             transactionRepository.getTransactions().collect {
                 transactions ->
                 transactionUIState = transactionUIState.copy(
-                    transactions = transactions.map { it.toTransactionDetails() }
+                    transactions = transactions.map { it?.toTransactionDetails() }
                 )
             }
         }

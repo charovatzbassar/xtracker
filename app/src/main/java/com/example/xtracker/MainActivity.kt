@@ -10,23 +10,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -34,16 +26,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.xtracker.ui.screen.IncomeScreen
-import com.example.myapplication.ui.screen.ExpensesScreen
+import com.example.xtracker.ui.screen.ExpensesScreen
 import com.example.xtracker.model.AppContainer
 import com.example.xtracker.model.AppDataContainer
 import com.example.xtracker.ui.screen.SavingsScreen
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
-import com.example.xtracker.model.XTrackerDatabase
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
 import com.example.xtracker.viewModel.TransactionViewModel
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -127,17 +117,16 @@ class MainActivity : ComponentActivity() {
                             content = { innerPadding ->
                                 NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
                                     composable("dashboard") {
-                                        println(transactionViewModel.transactionUIState.transactions)
-                                        Dashboard(navController = navController)
+                                        Dashboard(navController = navController, transactionViewModel = transactionViewModel)
                                     }
                                     composable("expenses") {
-                                        ExpensesScreen()
+                                        ExpensesScreen(transactionViewModel = transactionViewModel)
                                     }
                                     composable("income") {
-                                        IncomeScreen()
+                                        IncomeScreen(transactionViewModel = transactionViewModel)
                                     }
                                     composable("savings") {
-                                        SavingsScreen()
+                                        SavingsScreen(transactionViewModel = transactionViewModel)
                                     }
                                     composable("add"){
                                         AddEntryScreen()

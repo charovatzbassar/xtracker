@@ -14,21 +14,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.xtracker.model.Transaction
-import com.example.xtracker.model.Transactions
-import com.example.xtracker.model.Type
+import com.example.xtracker.model.TransactionType
+import com.example.xtracker.viewModel.TransactionDetails
+import com.example.xtracker.viewModel.TransactionViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeScreen() {
-    var totalExpenses by remember { mutableDoubleStateOf(0.0) }
+fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
+    var totalIncome by remember { mutableDoubleStateOf(0.0) }
+
+    val incomeTransactions = transactionViewModel!!.transactionUIState.transactions
+        .filter { it!!.type == TransactionType.INCOME.type }
+        .sortedByDescending { it!!.date }
 
     LaunchedEffect(Unit) {
-        totalExpenses = Transactions.transactions.filter { it.type == Type.EXPENSE }
-            .sumOf { it.amount }
+        totalIncome = incomeTransactions.sumOf { it!!.amount }
     }
 
     Column(
@@ -52,7 +55,7 @@ fun IncomeScreen() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "$totalExpenses USD",
+                    text = "$totalIncome USD",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF4CAF50),
@@ -70,15 +73,13 @@ fun IncomeScreen() {
                 containerColor = Color(0xFFE0F7FA)
             )
         ) {
-            LazyColumn(
-                contentPadding = PaddingValues(10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+            LazyColumn (
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(Transactions.transactions.filter { it.type == Type.EXPENSE }.sortedByDescending { LocalDate.parse(it.date) }) { transaction ->
-                    Column {
-                        ExpenseItem(transaction)
-                        Divider(color = Color.Gray, thickness = 1.dp)
-                    }
+                items(incomeTransactions){
+                        transaction -> TransactionCard(transaction = transaction)
                 }
             }
         }
@@ -87,9 +88,9 @@ fun IncomeScreen() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ExpenseItem(transaction: Transaction) {
+fun IncomeItem(transaction: TransactionDetails?) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction.date, formatter)
+    val date = LocalDate.parse(transaction?.date, formatter)
 
     val expenseAmountColor = Color(0xFF4CAF50)  // Green color for the amount
     val dateTextColor = Color.Gray  // Gray color for the date and time
@@ -121,7 +122,7 @@ fun ExpenseItem(transaction: Transaction) {
             )
         }
         Text(
-            text = "+${transaction.amount} USD",
+            text = "+${transaction?.amount} USD",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = expenseAmountColor
@@ -135,5 +136,5 @@ fun ExpenseItem(transaction: Transaction) {
 @Preview(showBackground = true)
 @Composable
 fun IncomeScreenPreview() {
-    IncomeScreen()
+    IncomeScreen(transactionViewModel = null)
 }

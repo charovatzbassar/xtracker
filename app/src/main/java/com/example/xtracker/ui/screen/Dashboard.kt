@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,14 +30,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.xtracker.model.Transaction
-import com.example.xtracker.model.Transactions
+import com.example.xtracker.viewModel.TransactionDetails
+import com.example.xtracker.viewModel.TransactionViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Dashboard(navController: NavHostController){
+fun Dashboard(navController: NavHostController, transactionViewModel: TransactionViewModel?){
     val income = 100
     val expense = 200
     val savings = 500
@@ -48,6 +47,8 @@ fun Dashboard(navController: NavHostController){
         Triple("Expenses", expense, expense.toString()),
         Triple("Savings", savings, savings.toString())
     )
+
+    val transactions = transactionViewModel!!.transactionUIState.transactions
 
     Column (
         modifier = Modifier
@@ -84,8 +85,8 @@ fun Dashboard(navController: NavHostController){
                 .padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(Transactions.transactions){
-                transactions -> TransactionCard(transaction = transactions)
+            items(transactions){
+                transaction -> TransactionCard(transaction = transaction)
             }
         }
     }
@@ -96,14 +97,14 @@ fun Dashboard(navController: NavHostController){
 @Composable
 fun DashboardPreview(){
     val navController = rememberNavController()
-    Dashboard(navController = navController)
+    Dashboard(navController = navController, transactionViewModel = null)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TransactionCard(transaction : Transaction){
+fun TransactionCard(transaction : TransactionDetails?){
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction.date, formatter)
+    val date = LocalDate.parse(transaction?.date, formatter)
     
     Card(
         modifier = Modifier
@@ -126,15 +127,15 @@ fun TransactionCard(transaction : Transaction){
             */
             Spacer(modifier = Modifier.width(20.dp))
             Column{
-                Text(text = transaction.type.toString())
+                Text(text = transaction?.type.toString())
                 Spacer(modifier = Modifier.height(20.dp))
                 Row (
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text(text = transaction.amount.toString() + "USD",
+                    Text(text = transaction?.amount.toString() + "USD",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if(transaction.amount<0){
+                        color = if(transaction?.amount!! < 0){
                             Color.Red
                         }
                         else{

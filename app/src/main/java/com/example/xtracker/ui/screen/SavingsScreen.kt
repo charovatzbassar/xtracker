@@ -14,21 +14,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.xtracker.model.Transaction
-import com.example.xtracker.model.Transactions
-import com.example.xtracker.model.Type
+import com.example.xtracker.model.TransactionType
+import com.example.xtracker.viewModel.TransactionDetails
+import com.example.xtracker.viewModel.TransactionViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavingsScreen() {
+fun SavingsScreen(transactionViewModel: TransactionViewModel?) {
     var totalSavings by remember { mutableDoubleStateOf(0.0) }
 
+    val savingsTransactions = transactionViewModel!!.transactionUIState.transactions
+        .filter { it!!.type == TransactionType.SAVINGS.type }
+        .sortedByDescending { it!!.date }
+
     LaunchedEffect(Unit) {
-        totalSavings = Transactions.transactions.filter { it.type == Type.SAVING }
-            .sumOf { it.amount }
+        totalSavings = savingsTransactions
+            .sumOf { it!!.amount }
     }
 
     Column(
@@ -48,12 +52,13 @@ fun SavingsScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         Divider(modifier = Modifier.padding(vertical = 10.dp))
 
-        LazyColumn(
-            contentPadding = PaddingValues(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+        LazyColumn (
+            modifier = Modifier
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(Transactions.transactions.filter { it.type == Type.SAVING }) { transaction ->
-                SavingsItem(transaction)
+            items(savingsTransactions){
+                    transaction -> TransactionCard(transaction = transaction)
             }
         }
     }
@@ -61,9 +66,9 @@ fun SavingsScreen() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SavingsItem(transaction: Transaction) {
+fun SavingsItem(transaction: TransactionDetails?) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction.date, formatter)
+    val date = LocalDate.parse(transaction?.date, formatter)
 
     val cardBackgroundColor = Color(0xFFE0F7FA) // Light Yellow for savings
     val savingsAmountColor = Color(0xFFFFA000) // Amber for the amount text
@@ -88,7 +93,7 @@ fun SavingsItem(transaction: Transaction) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "${transaction.amount} USD",
+                    text = "${transaction?.amount} USD",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = savingsAmountColor
@@ -100,7 +105,7 @@ fun SavingsItem(transaction: Transaction) {
                     color = Color.Gray
                 )
                 Text(
-                    text = transaction.category.name,
+                    text = "${transaction?.categoryID}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.DarkGray
@@ -114,5 +119,5 @@ fun SavingsItem(transaction: Transaction) {
 @Preview(showBackground = true)
 @Composable
 fun SavingsScreenPreview() {
-    SavingsScreen()
+    SavingsScreen(transactionViewModel = null)
 }
