@@ -8,5 +8,3 @@ data class Category(
     val name : String,
     @DrawableRes var icon : Int?
 )
-
-
