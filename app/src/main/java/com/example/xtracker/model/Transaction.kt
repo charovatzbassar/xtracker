@@ -7,5 +7,3 @@ data class Transaction(
     val date : String,
     val type : Type
 )
-
-
