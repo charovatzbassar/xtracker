@@ -14,15 +14,15 @@ data class TransactionDetails(
     val transactionID: Int = 0,
     val amount: Double = 0.0,
     val date: String = "",
-    val type: TransactionType = TransactionType.INCOME,
+    val type: String = "",
     val categoryID: Int = 0
 )
 
 data class TransactionUIState(
-    val transactions: List<Transaction> = emptyList(),
+    val transactions: List<TransactionDetails> = emptyList()
 )
 
-fun TransactionDetails.toTransactions(): Transaction = Transaction(
+fun TransactionDetails.toTransaction(): Transaction = Transaction(
     transactionID = transactionID,
     amount = amount,
     date = date,
@@ -30,7 +30,7 @@ fun TransactionDetails.toTransactions(): Transaction = Transaction(
     categoryID = categoryID
 )
 
-fun Transaction.toTransactionDetails() = Transaction(
+fun Transaction.toTransactionDetails() = TransactionDetails(
     transactionID = transactionID,
     amount = amount,
     date = date,
@@ -40,4 +40,13 @@ fun Transaction.toTransactionDetails() = Transaction(
 
 fun Transaction.toDashboardUIState(): TransactionUIState = TransactionUIState(
     transactions = listOf(this.toTransactionDetails())
+)
+
+// Assuming Transaction is a data class defined somewhere in your codebase
+data class Transaction(
+    val transactionID: Int,
+    val amount: Double,
+    val date: String,
+    val type: String,
+    val categoryID: Int
 )

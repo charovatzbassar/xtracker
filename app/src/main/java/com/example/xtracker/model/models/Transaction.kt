@@ -28,7 +28,7 @@ data class Transaction(
     val date: String,
 
     @ColumnInfo(name = "type")
-    val type: TransactionType,
+    val type: String,
 
     @ColumnInfo(name = "categoryID")
     val categoryID: Int

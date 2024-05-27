@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
         container = AppDataContainer(this)
         installSplashScreen()
 
-        var transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+        val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
 
 
         super.onCreate(savedInstanceState)

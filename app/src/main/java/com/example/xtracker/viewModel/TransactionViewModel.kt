@@ -16,7 +16,10 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     init {
         viewModelScope.launch {
             transactionRepository.getTransactions().collect {
-                transactions -> transactionUIState.copy(transactions = transactions)
+                transactions ->
+                transactionUIState = transactionUIState.copy(
+                    transactions = transactions.map { it.toTransactionDetails() }
+                )
             }
         }
     }
