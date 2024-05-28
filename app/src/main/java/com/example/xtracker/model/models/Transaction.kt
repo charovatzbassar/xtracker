@@ -7,14 +7,7 @@ import androidx.room.PrimaryKey
 import com.example.xtracker.model.TransactionType
 import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "Transaction", foreignKeys = [
-    ForeignKey(
-        entity = Category::class,
-        parentColumns = ["categoryID"],
-        childColumns = ["categoryID"],
-        onDelete = ForeignKey.CASCADE
-    )
-])
+@Entity(tableName = "Transaction")
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @NotNull
@@ -30,6 +23,6 @@ data class Transaction(
     @ColumnInfo(name = "type")
     val type: String,
 
-    @ColumnInfo(name = "categoryID")
-    val categoryID: Int
+    @ColumnInfo(name = "category")
+    val category: String
 )

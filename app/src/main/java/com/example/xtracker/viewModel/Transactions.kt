@@ -1,13 +1,7 @@
 package com.example.xtracker.viewModel
 
 import com.example.xtracker.model.models.Transaction
-import com.example.xtracker.model.TransactionType
-import com.example.xtracker.viewModel.TransactionUIState
 
-data class CategoryDetails(
-    val categoryID: Int = 0,
-    val categoryName: String = ""
-)
 
 
 data class TransactionUIState(
@@ -19,7 +13,7 @@ fun TransactionDetails.toTransaction(): Transaction = Transaction(
     amount = amount,
     date = date,
     type = type,
-    categoryID = categoryID
+    category = category
 )
 
 fun Transaction.toTransactionDetails() = TransactionDetails(
@@ -27,12 +21,9 @@ fun Transaction.toTransactionDetails() = TransactionDetails(
     amount = amount,
     date = date,
     type = type,
-    categoryID = categoryID
+    category = category
 )
 
-fun Transaction.toDashboardUIState(): TransactionUIState = TransactionUIState(
-    transactions = listOf(this.toTransactionDetails())
-)
 
 data class Transaction(
     val transactionID: Int,

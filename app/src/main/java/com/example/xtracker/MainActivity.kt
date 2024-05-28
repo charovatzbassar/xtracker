@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
@@ -27,8 +26,7 @@ import com.example.xtracker.model.TransactionType
 import com.example.xtracker.ui.composable.MenuItem
 import com.example.xtracker.ui.composable.NavigationDrawer
 import com.example.xtracker.ui.screen.navigation.AppNavHost
-import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
-import com.example.xtracker.viewModel.CategoryViewModel
+import com.example.xtracker.ui.theme.XTrackerTheme
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 
@@ -40,7 +38,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
-        val categoryViewModel = CategoryViewModel(categoryRepository = container.categoryRepository)
         transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
         transactionViewModel.getTotalForType(TransactionType.INCOME.type)
         transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
@@ -49,7 +46,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            NavigationDrawerComposeTheme {
+            XTrackerTheme {
                 val scope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -116,7 +113,6 @@ class MainActivity : ComponentActivity() {
                                 AppNavHost(
                                     navController = navController,
                                     transactionViewModel = transactionViewModel,
-                                    categoryViewModel = categoryViewModel,
                                     innerPadding = innerPadding
                                 )
                             }

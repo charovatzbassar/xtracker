@@ -5,5 +5,5 @@ data class TransactionDetails(
     val amount: Double = 0.0,
     val date: String = "",
     val type: String = "",
-    val categoryID: Int = 0
+    val category: String = ""
 )
