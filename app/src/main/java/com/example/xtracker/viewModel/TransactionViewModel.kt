@@ -55,4 +55,16 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
             transactionRepository.insert(transaction)
         }
     }
+
+    fun editTransaction(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.update(transaction)
+        }
+    }
+
+    fun deleteTransaction(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.delete(transaction)
+        }
+    }
 }

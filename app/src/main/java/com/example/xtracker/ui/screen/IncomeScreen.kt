@@ -1,5 +1,6 @@
 package com.example.xtracker.ui.screen
 
+import TransactionCard
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
@@ -76,7 +77,7 @@ fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(incomeTransactions){
-                        transaction -> TransactionCard(transaction = transaction)
+                        transaction -> TransactionCard(transaction = transaction, transactionViewModel = transactionViewModel)
                 }
             }
         }
