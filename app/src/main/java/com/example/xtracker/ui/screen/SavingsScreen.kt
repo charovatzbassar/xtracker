@@ -24,16 +24,12 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavingsScreen(transactionViewModel: TransactionViewModel?) {
-    var totalSavings by remember { mutableDoubleStateOf(0.0) }
+    val totalSavings = transactionViewModel!!.totalSavingState
 
-    val savingsTransactions = transactionViewModel!!.transactionUIState.transactions
+    val savingsTransactions = transactionViewModel.transactionUIState.transactions
         .filter { it!!.type == TransactionType.SAVINGS.type }
         .sortedByDescending { it!!.date }
 
-    LaunchedEffect(Unit) {
-        totalSavings = savingsTransactions
-            .sumOf { it!!.amount }
-    }
 
     Column(
         modifier = Modifier
@@ -59,57 +55,6 @@ fun SavingsScreen(transactionViewModel: TransactionViewModel?) {
         ) {
             items(savingsTransactions){
                     transaction -> TransactionCard(transaction = transaction)
-            }
-        }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun SavingsItem(transaction: TransactionDetails?) {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction?.date, formatter)
-
-    val cardBackgroundColor = Color(0xFFE0F7FA) // Light Yellow for savings
-    val savingsAmountColor = Color(0xFFFFA000) // Amber for the amount text
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor,
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = "${transaction?.amount} USD",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = savingsAmountColor
-                )
-                Text(
-                    text = "${date.month.value}.${date.dayOfMonth}.${date.year}",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Light,
-                    color = Color.Gray
-                )
-                Text(
-                    text = "${transaction?.categoryID}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.DarkGray
-                )
             }
         }
     }

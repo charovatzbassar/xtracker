@@ -1,6 +1,8 @@
 package com.example.xtracker.ui.screen
 
 import android.health.connect.datatypes.OxygenSaturationRecord
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,10 +24,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.xtracker.model.models.Transaction
+import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddEntryScreen() {
+fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Groceries") }
@@ -90,7 +97,13 @@ fun AddEntryScreen() {
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("Data has been sent to the database")
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                        val currentDate = LocalDateTime.now().format(formatter)
+
+                        val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = 0)
+                        transactionViewModel!!.addTransaction(newTransaction)
+
+                        Text("Transaction added successfully!")
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(onClick = { showConfirmation = false }) {
                             Text("OK")
@@ -135,8 +148,9 @@ fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String, o
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun AddScreenPreview(){
-    AddEntryScreen()
+    AddEntryScreen(transactionViewModel = null)
 }

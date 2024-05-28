@@ -24,16 +24,12 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesScreen(transactionViewModel: TransactionViewModel?) {
-    var totalExpenses by remember { mutableDoubleStateOf(0.0) }
+    val totalExpenses = transactionViewModel!!.totalExpenseState
 
-    val expenseTransactions = transactionViewModel!!.transactionUIState.transactions
+    val expenseTransactions = transactionViewModel.transactionUIState.transactions
         .filter { it!!.type == TransactionType.EXPENSES.type }
         .sortedByDescending { it!!.date }
 
-    LaunchedEffect(Unit) {
-        totalExpenses = expenseTransactions
-            .sumOf { it!!.amount }
-    }
 
     Column(
         modifier = Modifier
@@ -59,57 +55,6 @@ fun ExpensesScreen(transactionViewModel: TransactionViewModel?) {
         ) {
             items(expenseTransactions){
                     transaction -> TransactionCard(transaction = transaction)
-            }
-        }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun ExpenseItem(transaction: TransactionDetails?) {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction?.date, formatter)
-
-    val cardBackgroundColor = Color(0xFFE0F7FA)
-    val expenseAmountColor = Color(0xFFF08080)
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor,
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = transaction?.amount.toString() + " USD",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = expenseAmountColor
-                )
-                Text(
-                    text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Light,
-                    color = Color.Black
-                )
-                Text(
-                    text = "${transaction?.categoryID}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.DarkGray
-                )
             }
         }
     }

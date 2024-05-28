@@ -134,7 +134,7 @@ class MainActivity : ComponentActivity() {
                                         SavingsScreen(transactionViewModel = transactionViewModel)
                                     }
                                     composable("add"){
-                                        AddEntryScreen()
+                                        AddEntryScreen(transactionViewModel = transactionViewModel)
                                     }
                                 }
                             }

@@ -24,15 +24,12 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
-    var totalIncome by remember { mutableDoubleStateOf(0.0) }
+    val totalIncome = transactionViewModel!!.totalIncomeState
 
-    val incomeTransactions = transactionViewModel!!.transactionUIState.transactions
+    val incomeTransactions = transactionViewModel.transactionUIState.transactions
         .filter { it!!.type == TransactionType.INCOME.type }
         .sortedByDescending { it!!.date }
 
-    LaunchedEffect(Unit) {
-        totalIncome = incomeTransactions.sumOf { it!!.amount }
-    }
 
     Column(
         modifier = Modifier
@@ -85,52 +82,6 @@ fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
         }
     }
 }
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun IncomeItem(transaction: TransactionDetails?) {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val date = LocalDate.parse(transaction?.date, formatter)
-
-    val expenseAmountColor = Color(0xFF4CAF50)  // Green color for the amount
-    val dateTextColor = Color.Gray  // Gray color for the date and time
-
-    val incomeTypes = listOf("Paycheck", "Booking", "Freelance", "Investment", "Rental", "Sale", "Dividend")
-
-    Row(
-        modifier = Modifier
-            .padding(7.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = incomeTypes.random(), // Randomly selecting income type from the list
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-            Text(
-                text = "${date.month.value}.${date.dayOfMonth}.${date.year}",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Light,
-                color = dateTextColor
-            )
-        }
-        Text(
-            text = "+${transaction?.amount} USD",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = expenseAmountColor
-        )
-    }
-}
-
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)

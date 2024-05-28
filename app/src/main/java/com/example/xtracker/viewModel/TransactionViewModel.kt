@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xtracker.model.TransactionType
+import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.model.repositories.TransactionRepository
 import kotlinx.coroutines.launch
 
@@ -46,6 +47,12 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                         totalIncome -> totalIncomeState = totalIncome
                 }
             }
+        }
+    }
+
+    fun addTransaction(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.insert(transaction)
         }
     }
 }
