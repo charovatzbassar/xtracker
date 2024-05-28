@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(private val categoryRepository: CategoryRepository): ViewModel() {
-    var categories: List<Category?> by mutableStateOf(emptyList())
+    var categories: List<Category> by mutableStateOf(emptyList())
         private set
 
     init {

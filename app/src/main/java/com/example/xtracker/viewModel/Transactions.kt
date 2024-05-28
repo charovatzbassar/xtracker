@@ -1,8 +1,6 @@
 package com.example.xtracker.viewModel
 
 import com.example.xtracker.model.models.Transaction
-import com.example.xtracker.model.TransactionType
-import com.example.xtracker.viewModel.TransactionUIState
 
 data class CategoryDetails(
     val categoryID: Int = 0,

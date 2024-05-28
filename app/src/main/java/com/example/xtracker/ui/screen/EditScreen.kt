@@ -31,7 +31,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.CategoryViewModel
-import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 
@@ -42,12 +41,15 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
     var transaction: Transaction? by remember {
         mutableStateOf(null)
     }
+
+    println(transaction?.transactionID)
+
     var selectedType: String? by remember { mutableStateOf("Expenses") }
     var amount: String? by remember { mutableStateOf("") }
-    var selectedCategory: String? by remember { mutableStateOf("Groceries") }
+    var selectedCategory: String? by remember { mutableStateOf("Food") }
     var showConfirmation by remember { mutableStateOf(false) }
     val categories = categoryViewModel.categories.map {
-            it -> it!!.categoryName
+            it.categoryName
     }
 
     val scope = rememberCoroutineScope()
@@ -57,9 +59,11 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
         selectedType = transaction?.type
         amount = transaction?.amount.toString()
         selectedCategory = categoryViewModel.categories.find {
-            it -> it?.categoryID == id
+            it.categoryID == id
         }?.categoryName
     }
+
+    println(selectedCategory)
 
     Column(
         modifier = Modifier
@@ -119,7 +123,7 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         val category = categoryViewModel.categories.find {
-                            it!!.categoryName == selectedCategory
+                            it.categoryName == selectedCategory
                         }
 
                         val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> Transaction(amount = it.toDouble(), type = it1, date = it2, categoryID = category!!.categoryID, transactionID = it3) } } } }

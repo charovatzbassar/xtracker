@@ -43,10 +43,10 @@ import java.time.format.DateTimeFormatter
 fun AddEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewModel: CategoryViewModel) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Groceries") }
+    var selectedCategory by remember { mutableStateOf("Food") }
     var showConfirmation by remember { mutableStateOf(false) }
     val categories = categoryViewModel.categories.map {
-        it -> it!!.categoryName
+        it.categoryName
     }
 
     val scope = rememberCoroutineScope()
@@ -111,7 +111,7 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMode
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                         val currentDate = LocalDateTime.now().format(formatter)
                         val category = categoryViewModel.categories.find {
-                            it -> it!!.categoryName == selectedCategory
+                            it.categoryName == selectedCategory
                         }
 
                         val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = category!!.categoryID)
