@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String, onItemSelected: (String) -> Unit) {
+fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String?, onItemSelected: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
@@ -25,7 +25,9 @@ fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String, o
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = selectedItem)
+            if (selectedItem != null) {
+                Text(text = selectedItem)
+            }
         }
         DropdownMenu(
             expanded = expanded,

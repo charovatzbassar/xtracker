@@ -47,8 +47,7 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
         }
         composable("edit/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!.toInt()
-            transactionViewModel.getTransactionById(id = id)
-            EditEntryScreen(transactionViewModel = transactionViewModel, categoryViewModel = categoryViewModel, transaction = transactionViewModel.currentTransaction?.toTransactionDetails(), navController = navController)
+            EditEntryScreen(transactionViewModel = transactionViewModel, categoryViewModel = categoryViewModel, navController = navController, id = id)
         }
     }
 }

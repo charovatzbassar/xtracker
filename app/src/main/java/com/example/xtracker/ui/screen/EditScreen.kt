@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
@@ -35,14 +37,29 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewModel: CategoryViewModel, transaction: TransactionDetails?, navController: NavHostController) {
-    var selectedType by remember { mutableStateOf("Income") }
-    var amount by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Groceries") }
+fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewModel: CategoryViewModel, navController: NavHostController, id: Int) {
+
+    var transaction: Transaction? by remember {
+        mutableStateOf(null)
+    }
+    var selectedType: String? by remember { mutableStateOf("Expenses") }
+    var amount: String? by remember { mutableStateOf("") }
+    var selectedCategory: String? by remember { mutableStateOf("Groceries") }
     var showConfirmation by remember { mutableStateOf(false) }
-    val categories = listOf("Groceries", "Meds", "Fuel", "Others")
+    val categories = categoryViewModel.categories.map {
+            it -> it!!.categoryName
+    }
 
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        transaction = transactionViewModel?.getTransactionById(id)
+        selectedType = transaction?.type
+        amount = transaction?.amount.toString()
+        selectedCategory = categoryViewModel.categories.find {
+            it -> it?.categoryID == id
+        }?.categoryName
+    }
 
     Column(
         modifier = Modifier
@@ -54,12 +71,12 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
 
         DropdownMenuDemo(
             label = "Select Type",
-            items = listOf("Income", "Expense", "Savings"),
+            items = listOf("Income", "Expenses", "Savings"),
             selectedItem = selectedType,
             onItemSelected = { selectedType = it }
         )
 
-        if (selectedType == "Expense") {
+        if (selectedType == "Expenses") {
             DropdownMenuDemo(
                 label = "Select Category",
                 items = categories,
@@ -68,15 +85,17 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
             )
         }
 
-        OutlinedTextField(
-            value = amount,
-            onValueChange = { amount = it },
-            label = { Text("Amount") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        )
+        amount?.let {
+            OutlinedTextField(
+                value = it,
+                onValueChange = { amount = it },
+                label = { Text("Amount") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            )
+        }
 
         Button(
             onClick = {
@@ -99,7 +118,12 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        val category = categoryViewModel.categories.find {
+                            it!!.categoryName == selectedCategory
+                        }
 
+                        val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> Transaction(amount = it.toDouble(), type = it1, date = it2, categoryID = category!!.categoryID, transactionID = it3) } } } }
+                        transactionViewModel!!.editTransaction(newTransaction!!)
 
                         Text("Transaction edited successfully!")
                         Spacer(modifier = Modifier.height(8.dp))

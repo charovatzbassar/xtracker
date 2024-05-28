@@ -73,9 +73,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         }
     }
 
-    fun getTransactionById(id: Int) {
-        viewModelScope.launch {
-            currentTransaction = transactionRepository.getOneStream(id).firstOrNull()
-        }
+    suspend fun getTransactionById(id: Int): Transaction? {
+        return transactionRepository.getOneStream(id).firstOrNull()
     }
 }
