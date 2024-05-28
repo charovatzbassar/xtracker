@@ -15,12 +15,12 @@ class TransactionRepository(private val transactionDao: TransactionDao): BaseRep
 
     override suspend fun getOneStream(id: Int): Flow<Transaction?> = transactionDao.getTransaction(id)
 
-    suspend fun getTransactions(): Flow<List<Transaction>> = transactionDao.getTransactions()
+    fun getTransactions(): Flow<List<Transaction?>> = transactionDao.getTransactions()
 
-    suspend fun getTotal(): Flow<Int> = transactionDao.getTotal()
-    suspend fun getTotalForType(type: TransactionType): Flow<Int> = transactionDao.getTotalForType(type)
-    suspend fun getTotalForCategory(categoryID: Int): Flow<Int> = transactionDao.getTotalForCategory(categoryID)
-    suspend fun getTransactionsByType(type: TransactionType): Flow<List<Transaction>> = transactionDao.getTransactionsByType(type)
-    suspend fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction>> = transactionDao.getTransactionsByCategory(categoryID)
-    suspend fun getTotalForCategoryAndType(categoryID: Int, type: TransactionType): Flow<Int> = transactionDao.getTotalForCategoryAndType(categoryID, type)
+    fun getTotal(): Flow<Double> = transactionDao.getTotal()
+    fun getTotalForType(type: String): Flow<Double> = transactionDao.getTotalForType(type)
+    fun getTotalForCategory(categoryID: Int): Flow<Double> = transactionDao.getTotalForCategory(categoryID)
+    fun getTransactionsByType(type: String): Flow<List<Transaction?>> = transactionDao.getTransactionsByType(type)
+    fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction?>> = transactionDao.getTransactionsByCategory(categoryID)
+    fun getTotalForCategoryAndType(categoryID: Int, type: String): Flow<Double> = transactionDao.getTotalForCategoryAndType(categoryID, type)
 }

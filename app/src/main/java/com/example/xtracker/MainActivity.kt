@@ -7,51 +7,46 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.xtracker.ui.screen.IncomeScreen
-import com.example.myapplication.ui.screen.ExpensesScreen
-import com.example.xtracker.ui.screen.SavingsScreen
-import com.example.xtracker.ui.screen.AddEntryScreen
-import com.example.xtracker.ui.screen.Dashboard
-import com.example.xtracker.model.XTrackerDatabase
+import com.example.xtracker.model.AppContainer
+import com.example.xtracker.model.AppDataContainer
+import com.example.xtracker.model.TransactionType
+import com.example.xtracker.ui.composable.MenuItem
+import com.example.xtracker.ui.composable.NavigationDrawer
+import com.example.xtracker.ui.screen.navigation.AppNavHost
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
-import kotlinx.coroutines.flow.forEach
+import com.example.xtracker.viewModel.CategoryViewModel
+import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    lateinit var container: AppContainer
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        container = AppDataContainer(this)
         installSplashScreen()
 
+        val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+        val categoryViewModel = CategoryViewModel(categoryRepository = container.categoryRepository)
+        transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
+        transactionViewModel.getTotalForType(TransactionType.INCOME.type)
+        transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
+
+
         super.onCreate(savedInstanceState)
-
-
 
         setContent {
             NavigationDrawerComposeTheme {
@@ -63,9 +58,7 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
-                            Column {
-                                DrawerHeader()
-                                DrawerBody(
+                                NavigationDrawer(
                                     items = listOf(
                                         MenuItem(
                                             id = "dashboard",
@@ -99,7 +92,6 @@ class MainActivity : ComponentActivity() {
                                         ),
                                     ),
                                     onItemClick = {
-                                        println("Clicked on ${it.id}")
                                         navController.navigate(it.id)
                                         scope.launch {
                                             drawerState.close()
@@ -107,7 +99,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             }
-                        }
+
                     },
                     content = {
                         Scaffold(
@@ -121,25 +113,12 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             content = { innerPadding ->
-                                NavHost(navController = navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding)) {
-                                    composable("dashboard") {
-                                        //Text(text = "Dashboard")
-                                        Dashboard(navController = navController)
-                                    }
-                                    composable("expenses") {
-                                        ExpensesScreen()
-
-                                    }
-                                    composable("income") {
-                                        IncomeScreen()
-                                    }
-                                    composable("savings") {
-                                        SavingsScreen()
-                                    }
-                                    composable("add"){
-                                        AddEntryScreen()
-                                    }
-                                }
+                                AppNavHost(
+                                    navController = navController,
+                                    transactionViewModel = transactionViewModel,
+                                    categoryViewModel = categoryViewModel,
+                                    innerPadding = innerPadding
+                                )
                             }
                         )
                     }
