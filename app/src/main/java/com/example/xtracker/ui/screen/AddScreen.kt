@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionViewModel
@@ -114,12 +115,19 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMode
                             it.categoryName == selectedCategory
                         }
 
-                        val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = category!!.categoryID)
-                        transactionViewModel!!.addTransaction(newTransaction)
+                        if (amount != "") {
+                            val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = category!!.categoryID)
+                            transactionViewModel!!.addTransaction(newTransaction)
 
-                        Text("Transaction added successfully!")
+                            Text("Transaction added successfully!")
+                        } else {
+                            Text("Amount cannot be empty!")
+                        }
+
                         Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { showConfirmation = false }) {
+                        Button(onClick = {
+                            showConfirmation = false
+                        }) {
                             Text("OK")
                         }
                     }

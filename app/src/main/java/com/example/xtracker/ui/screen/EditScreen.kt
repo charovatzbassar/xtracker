@@ -126,14 +126,22 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
                             it.categoryName == selectedCategory
                         }
 
-                        val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> Transaction(amount = it.toDouble(), type = it1, date = it2, categoryID = category!!.categoryID, transactionID = it3) } } } }
-                        transactionViewModel!!.editTransaction(newTransaction!!)
+                        if (amount != "") {
+                            val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> Transaction(amount = it.toDouble(), type = it1, date = it2, categoryID = category!!.categoryID, transactionID = it3) } } } }
+                            transactionViewModel!!.editTransaction(newTransaction!!)
 
-                        Text("Transaction edited successfully!")
+                            Text("Transaction edited successfully!")
+                        } else {
+                            Text("Amount cannot be empty!")
+                        }
+
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(onClick = {
                             showConfirmation = false
-                            navController.navigate("dashboard")
+
+                            if (amount != "") {
+                                navController.navigate("dashboard")
+                            }
                         }) {
                             Text("OK")
                         }
