@@ -19,12 +19,13 @@ import com.example.xtracker.ui.screen.EditEntryScreen
 import com.example.xtracker.ui.screen.ExpensesScreen
 import com.example.xtracker.ui.screen.IncomeScreen
 import com.example.xtracker.ui.screen.SavingsScreen
+import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionViewModel
 import com.example.xtracker.viewModel.toTransactionDetails
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavHost(navController: NavHostController, transactionViewModel: TransactionViewModel, innerPadding: PaddingValues) {
+fun AppNavHost(navController: NavHostController, transactionViewModel: TransactionViewModel, categoryViewModel: CategoryViewModel, innerPadding: PaddingValues) {
     NavHost(navController = navController, startDestination = "dashboard", modifier = androidx.compose.ui.Modifier.padding(
         innerPadding
     )) {
@@ -42,12 +43,12 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
             SavingsScreen(navController = navController, transactionViewModel = transactionViewModel)
         }
         composable("add"){
-            AddEntryScreen(transactionViewModel = transactionViewModel)
+            AddEntryScreen(transactionViewModel = transactionViewModel, categoryViewModel = categoryViewModel)
         }
         composable("edit/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!.toInt()
             transactionViewModel.getTransactionById(id = id)
-            EditEntryScreen(transactionViewModel = transactionViewModel, transaction = transactionViewModel.currentTransaction?.toTransactionDetails(), navController = navController)
+            EditEntryScreen(transactionViewModel = transactionViewModel, categoryViewModel = categoryViewModel, transaction = transactionViewModel.currentTransaction?.toTransactionDetails(), navController = navController)
         }
     }
 }

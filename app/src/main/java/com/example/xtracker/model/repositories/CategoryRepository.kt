@@ -13,5 +13,5 @@ class CategoryRepository(private val categoryDao: CategoryDao): BaseRepository<C
 
     override suspend fun getOneStream(id: Int): Flow<Category?> = categoryDao.getCategory(id)
 
-    suspend fun getCourses(): Flow<List<Category?>> = categoryDao.getCategories()
+    fun getCategories(): Flow<List<Category?>> = categoryDao.getCategories()
 }

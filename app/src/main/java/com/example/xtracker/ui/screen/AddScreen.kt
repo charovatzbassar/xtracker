@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.xtracker.model.models.Transaction
+import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -39,14 +40,18 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
+fun AddEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewModel: CategoryViewModel) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Groceries") }
     var showConfirmation by remember { mutableStateOf(false) }
-    val categories = listOf("Groceries", "Meds", "Fuel", "Others")
+    val categories = categoryViewModel.categories.map {
+        it -> it!!.categoryName
+    }
 
     val scope = rememberCoroutineScope()
+
+    println(categoryViewModel.categories)
 
     Column(
         modifier = Modifier
@@ -105,8 +110,11 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
                     ) {
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                         val currentDate = LocalDateTime.now().format(formatter)
+                        val category = categoryViewModel.categories.find {
+                            it -> it!!.categoryName == selectedCategory
+                        }
 
-                        val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = 0)
+                        val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = category!!.categoryID)
                         transactionViewModel!!.addTransaction(newTransaction)
 
                         Text("Transaction added successfully!")

@@ -28,6 +28,7 @@ import com.example.xtracker.ui.composable.MenuItem
 import com.example.xtracker.ui.composable.NavigationDrawer
 import com.example.xtracker.ui.screen.navigation.AppNavHost
 import com.example.xtracker.ui.theme.NavigationDrawerComposeTheme
+import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+        val categoryViewModel = CategoryViewModel(categoryRepository = container.categoryRepository)
         transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
         transactionViewModel.getTotalForType(TransactionType.INCOME.type)
         transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
@@ -114,6 +116,7 @@ class MainActivity : ComponentActivity() {
                                 AppNavHost(
                                     navController = navController,
                                     transactionViewModel = transactionViewModel,
+                                    categoryViewModel = categoryViewModel,
                                     innerPadding = innerPadding
                                 )
                             }

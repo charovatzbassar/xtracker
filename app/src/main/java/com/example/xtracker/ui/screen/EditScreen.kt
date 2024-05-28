@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,21 +24,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import com.example.xtracker.model.models.Transaction
+import com.example.xtracker.viewModel.CategoryViewModel
 import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun EditEntryScreen(transactionViewModel: TransactionViewModel?, transaction: TransactionDetails?, navController: NavHostController) {
+fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewModel: CategoryViewModel, transaction: TransactionDetails?, navController: NavHostController) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Groceries") }
