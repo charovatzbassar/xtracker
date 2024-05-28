@@ -74,7 +74,7 @@ fun Dashboard(navController: NavHostController, transactionViewModel: Transactio
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(transactions){
-                transaction -> TransactionCard(transaction = transaction, transactionViewModel = transactionViewModel)
+                transaction -> TransactionCard(transaction = transaction, transactionViewModel = transactionViewModel, navController = navController)
             }
         }
     }

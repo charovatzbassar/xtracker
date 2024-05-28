@@ -31,7 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import com.example.xtracker.model.models.Transaction
+import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -39,7 +41,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
+fun EditEntryScreen(transactionViewModel: TransactionViewModel?, transaction: TransactionDetails?, navController: NavHostController) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Groceries") }
@@ -54,7 +56,7 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Add Entry", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
+        Text(text = "Edit Entry", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
 
         DropdownMenuDemo(
             label = "Select Type",
@@ -103,15 +105,14 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                        val currentDate = LocalDateTime.now().format(formatter)
 
-                        val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, categoryID = 0)
-                        transactionViewModel!!.addTransaction(newTransaction)
 
-                        Text("Transaction added successfully!")
+                        Text("Transaction edited successfully!")
                         Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { showConfirmation = false }) {
+                        Button(onClick = {
+                            showConfirmation = false
+                            navController.navigate("dashboard")
+                        }) {
                             Text("OK")
                         }
                     }

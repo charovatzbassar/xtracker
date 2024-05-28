@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.xtracker.model.models.Transaction
+import androidx.navigation.NavHostController
 import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
 import com.example.xtracker.viewModel.toTransaction
@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: TransactionViewModel){
+fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: TransactionViewModel, navController: NavHostController){
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val date = LocalDate.parse(transaction?.date, formatter)
 
@@ -70,11 +70,18 @@ fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: Tra
                     Text(text = "${date.month.value.toString()}.${date.dayOfMonth.toString()}.${date.year.toString()}", fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
             }
-            Button(onClick = {
-                val delTransaction = transaction?.toTransaction()
-                transactionViewModel.deleteTransaction(delTransaction!!)
-            }) {
-                Text(text = "Delete")
+            Column{
+                Button(onClick = {
+                    val delTransaction = transaction?.toTransaction()
+                    transactionViewModel.deleteTransaction(delTransaction!!)
+                }) {
+                    Text(text = "Delete")
+                }
+                Button(onClick = {
+                    navController.navigate("edit/${transaction!!.transactionID}")
+                }) {
+                    Text(text = "Edit")
+                }
             }
         }
     }

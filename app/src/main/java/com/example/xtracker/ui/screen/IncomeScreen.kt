@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.xtracker.model.TransactionType
 import com.example.xtracker.viewModel.TransactionDetails
 import com.example.xtracker.viewModel.TransactionViewModel
@@ -24,7 +25,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
+fun IncomeScreen(transactionViewModel: TransactionViewModel?, navController: NavHostController) {
     val totalIncome = transactionViewModel!!.totalIncomeState
 
     val incomeTransactions = transactionViewModel.transactionUIState.transactions
@@ -77,16 +78,10 @@ fun IncomeScreen(transactionViewModel: TransactionViewModel?) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(incomeTransactions){
-                        transaction -> TransactionCard(transaction = transaction, transactionViewModel = transactionViewModel)
+                        transaction -> TransactionCard(transaction = transaction, transactionViewModel = transactionViewModel, navController = navController)
                 }
             }
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun IncomeScreenPreview() {
-    IncomeScreen(transactionViewModel = null)
-}

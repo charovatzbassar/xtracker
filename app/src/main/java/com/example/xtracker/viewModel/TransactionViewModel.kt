@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.xtracker.model.TransactionType
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.model.repositories.TransactionRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
@@ -21,6 +23,9 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     var totalExpenseState by mutableDoubleStateOf(0.0)
     private set
     var totalSavingState by mutableDoubleStateOf(0.0)
+    private set
+
+    var currentTransaction: Transaction? by mutableStateOf(null)
     private set
 
     init {
@@ -38,7 +43,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         viewModelScope.launch {
             when (type) {
                 "Expenses" -> transactionRepository.getTotalForType(TransactionType.EXPENSES.type).collect {
-                    totalExpenses -> totalExpenseState = totalExpenses
+                        totalExpenses -> totalExpenseState = totalExpenses
                 }
                 "Savings" -> transactionRepository.getTotalForType(TransactionType.SAVINGS.type).collect {
                         totalSavings -> totalSavingState = totalSavings
@@ -65,6 +70,12 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     fun deleteTransaction(transaction: Transaction) {
         viewModelScope.launch {
             transactionRepository.delete(transaction)
+        }
+    }
+
+    fun getTransactionById(id: Int) {
+        viewModelScope.launch {
+            currentTransaction = transactionRepository.getOneStream(id).firstOrNull()
         }
     }
 }
