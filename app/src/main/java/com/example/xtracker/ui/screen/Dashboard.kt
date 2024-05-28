@@ -66,7 +66,11 @@ fun Dashboard(navController: NavHostController, transactionViewModel: Transactio
 
         Divider(modifier = Modifier.padding(15.dp))
 
-        Text(text = "Latest transactions", fontSize = 20.sp, modifier = Modifier.align(Alignment.Start))
+        Text(text = if (transactions.isEmpty()) {
+            "There are no transactions."
+        } else {
+            "Latest transactions"
+               }, fontSize = 20.sp, modifier = Modifier.align(Alignment.Start))
 
         LazyColumn (
             modifier = Modifier

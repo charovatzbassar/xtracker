@@ -24,25 +24,26 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.xtracker.model.TransactionType
 
 @Composable
 fun TotalCard(title:String, amount: Double?, displayAmount: String, onClick: () -> Unit){
     val totalNumberColor: Color = when (title) {
-        "Income", "Savings" -> MaterialTheme.colorScheme.primary
-        "Expenses" -> MaterialTheme.colorScheme.error
+        TransactionType.INCOME.type, TransactionType.SAVINGS.type -> MaterialTheme.colorScheme.primary
+        TransactionType.EXPENSES.type -> MaterialTheme.colorScheme.error
         else -> Color.White
     }
 
     val totalNumberText: String = when (title) {
-        "Income", "Savings" -> "+$displayAmount"
-        "Expenses" -> "-$displayAmount"
+        TransactionType.INCOME.type, TransactionType.SAVINGS.type -> "+$$displayAmount"
+        TransactionType.EXPENSES.type -> "-$$displayAmount"
         else -> displayAmount
     }
 
     val icon: ImageVector = when (title) {
-        "Income" -> Icons.Default.AddCircle
-        "Expenses" -> Icons.Default.ShoppingCart
-        "Savings" -> Icons.Default.Email
+        TransactionType.INCOME.type -> Icons.Default.AddCircle
+        TransactionType.EXPENSES.type -> Icons.Default.ShoppingCart
+        TransactionType.SAVINGS.type -> Icons.Default.Email
         else -> Icons.Default.AddCircle
     }
 
