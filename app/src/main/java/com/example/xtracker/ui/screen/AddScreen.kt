@@ -63,12 +63,12 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMode
 
         DropdownMenuDemo(
             label = "Select Type",
-            items = listOf("Income", "Expense", "Savings"),
+            items = listOf("Income", "Expenses", "Savings"),
             selectedItem = selectedType,
             onItemSelected = { selectedType = it }
         )
 
-        if (selectedType == "Expense") {
+        if (selectedType == "Expenses") {
             DropdownMenuDemo(
                 label = "Select Category",
                 items = categories,
