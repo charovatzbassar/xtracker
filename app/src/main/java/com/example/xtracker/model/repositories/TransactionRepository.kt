@@ -19,8 +19,8 @@ class TransactionRepository(private val transactionDao: TransactionDao): BaseRep
 
     fun getTotal(): Flow<Double> = transactionDao.getTotal()
     fun getTotalForType(type: String): Flow<Double> = transactionDao.getTotalForType(type)
-    fun getTotalForCategory(categoryID: Int): Flow<Double> = transactionDao.getTotalForCategory(categoryID)
+    fun getTotalForCategory(category: String): Flow<Double> = transactionDao.getTotalForCategory(category)
     fun getTransactionsByType(type: String): Flow<List<Transaction?>> = transactionDao.getTransactionsByType(type)
-    fun getTransactionsByCategory(categoryID: Int): Flow<List<Transaction?>> = transactionDao.getTransactionsByCategory(categoryID)
-    fun getTotalForCategoryAndType(categoryID: Int, type: String): Flow<Double> = transactionDao.getTotalForCategoryAndType(categoryID, type)
+    fun getTransactionsByCategory(category: String): Flow<List<Transaction?>> = transactionDao.getTransactionsByCategory(category)
+    fun getTotalForCategoryAndType(category: String, type: String): Flow<Double> = transactionDao.getTotalForCategoryAndType(category, type)
 }
