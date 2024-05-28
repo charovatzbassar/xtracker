@@ -59,7 +59,7 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, categoryViewMod
         selectedType = transaction?.type
         amount = transaction?.amount.toString()
         selectedCategory = categoryViewModel.categories.find {
-            it.categoryID == id
+            it.categoryID == transaction?.categoryID
         }?.categoryName
     }
 
