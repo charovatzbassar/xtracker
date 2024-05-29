@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                         ),
                                         MenuItem(
                                             id = "add",
-                                            title = "Add Entry",
+                                            title = "Add Transaction",
                                             contentDescription = "Go to add entry screen",
                                             icon = Icons.Default.Add
                                         ),

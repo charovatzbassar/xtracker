@@ -51,7 +51,6 @@ fun Dashboard(navController: NavHostController, transactionViewModel: Transactio
             items(items) { item ->
                 TotalCard(
                     title = item.first,
-                    amount = item.second,
                     displayAmount = item.third,
                     onClick = {
                         when (item.first) {
