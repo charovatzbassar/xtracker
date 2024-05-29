@@ -52,7 +52,7 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Add Entry", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
+        Text(text = "Add New Transaction", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
 
         DropdownMenuDemo(
             label = "Select Type",

@@ -67,7 +67,7 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, navController: 
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Edit Entry", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
+        Text(text = "Edit Transaction", fontSize = 24.sp, modifier = Modifier.padding(bottom = 16.dp))
 
         DropdownMenuDemo(
             label = "Select Type",
