@@ -118,21 +118,22 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, navController: 
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        val regex = "^(?!\\.)[0-9]*\\.?[0-9]+$".toRegex()
 
-                        if (amount != "") {
+                        if (amount?.let { regex.matches(it) } == true) {
                             val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> selectedCategory?.let { it4 -> Transaction(amount = it.toDouble(), type = it1, date = it2, category = it4, transactionID = it3) } } } } }
                             transactionViewModel!!.editTransaction(newTransaction!!)
 
                             Text("Transaction edited successfully!")
                         } else {
-                            Text("Amount cannot be empty!")
+                            Text("Amount is invalid or empty!")
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(onClick = {
                             showConfirmation = false
 
-                            if (amount != "") {
+                            if (amount?.let { regex.matches(it) } == true) {
                                 navController.navigate("dashboard")
                             }
                         }) {
