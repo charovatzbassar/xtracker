@@ -1,8 +1,10 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +22,7 @@ fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String?, 
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 16.dp)) {
-        Text(text = label, modifier = Modifier.padding(bottom = 8.dp))
+        Text(text = label)
         OutlinedButton(
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth()
@@ -35,13 +37,12 @@ fun DropdownMenuDemo(label: String, items: List<String>, selectedItem: String?, 
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
-                    text = { item },
+                    text = { Text(text = item) } ,
                     onClick = {
                         onItemSelected(item)
                         expanded = false
                     }
                 )
-                Text(text = item)
             }
         }
     }

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.xtracker.model.Category
+import com.example.xtracker.model.TransactionType
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.TransactionViewModel
 import kotlinx.coroutines.launch
@@ -70,12 +71,12 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, navController: 
 
         DropdownMenuDemo(
             label = "Select Type",
-            items = listOf("Income", "Expenses", "Savings"),
+            items = listOf(TransactionType.INCOME.type, TransactionType.EXPENSES.type, TransactionType.SAVINGS.type),
             selectedItem = selectedType,
             onItemSelected = { selectedType = it }
         )
 
-        if (selectedType == "Expenses") {
+        if (selectedType == TransactionType.EXPENSES.type) {
             DropdownMenuDemo(
                 label = "Select Category",
                 items = categories,

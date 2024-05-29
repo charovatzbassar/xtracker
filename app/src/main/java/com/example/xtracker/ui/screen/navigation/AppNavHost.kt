@@ -10,12 +10,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.xtracker.model.TransactionType
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.screen.EditEntryScreen
-import com.example.xtracker.ui.screen.ExpensesScreen
-import com.example.xtracker.ui.screen.IncomeScreen
-import com.example.xtracker.ui.screen.SavingsScreen
+import com.example.xtracker.ui.screen.TransactionsScreen
 import com.example.xtracker.viewModel.TransactionViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,13 +28,13 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
             Dashboard(navController = navController, transactionViewModel = transactionViewModel)
         }
         composable("expenses") {
-            ExpensesScreen(navController = navController, transactionViewModel = transactionViewModel)
+            TransactionsScreen(navController = navController, transactionViewModel = transactionViewModel, transactionType = TransactionType.EXPENSES)
         }
         composable("income") {
-            IncomeScreen(navController = navController, transactionViewModel = transactionViewModel)
+            TransactionsScreen(navController = navController, transactionViewModel = transactionViewModel, transactionType = TransactionType.INCOME)
         }
         composable("savings") {
-            SavingsScreen(navController = navController, transactionViewModel = transactionViewModel)
+            TransactionsScreen(navController = navController, transactionViewModel = transactionViewModel, transactionType = TransactionType.SAVINGS)
         }
         composable("add"){
             AddEntryScreen(transactionViewModel = transactionViewModel)
