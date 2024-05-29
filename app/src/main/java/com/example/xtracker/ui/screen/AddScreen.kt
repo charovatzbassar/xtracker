@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.text.isDigitsOnly
 import com.example.xtracker.model.Category
 import com.example.xtracker.model.TransactionType
 import com.example.xtracker.model.models.Transaction
@@ -103,14 +104,14 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
                     ) {
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                         val currentDate = LocalDateTime.now().format(formatter)
-
-                        if (amount != "") {
+                        val regex = "^(?!\\.)[0-9]*\\.?[0-9]+$".toRegex()
+                        if (regex.matches(amount)) {
                             val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, category = selectedCategory)
                             transactionViewModel!!.addTransaction(newTransaction)
 
                             Text("Transaction added successfully!")
                         } else {
-                            Text("Amount cannot be empty!")
+                            Text("Amount is invalid or empty!")
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))

@@ -123,6 +123,7 @@ fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: Tra
                     Button(onClick = {
                         val delTransaction = transaction?.toTransaction()
                         transactionViewModel.deleteTransaction(delTransaction!!)
+                        deleteModalOpen.value = false
                     }) {
                         Text("OK")
                     }
