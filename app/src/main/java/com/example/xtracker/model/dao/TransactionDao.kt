@@ -22,7 +22,7 @@ interface TransactionDao {
     @Delete
     suspend fun delete(transaction: Transaction)
 
-    @Query("SELECT * FROM `Transaction`")
+    @Query("SELECT * FROM `Transaction` ORDER BY transactionID DESC;")
     fun getTransactions(): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE transactionID = :id")
