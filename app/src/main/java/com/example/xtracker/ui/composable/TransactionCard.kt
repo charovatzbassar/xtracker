@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +53,7 @@ fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: Tra
         modifier = Modifier
             .padding(5.dp)
             .width(350.dp)
-            .height(150.dp)
+            .height(160.dp)
     ){
         Row(
             verticalAlignment = Alignment.Top,
@@ -61,7 +62,7 @@ fun TransactionCard(transaction : TransactionDetails?, transactionViewModel: Tra
         ){
             Spacer(modifier = Modifier.width(20.dp))
             Column {
-                Text(text = "${date.dayOfMonth}.${date.month.value}.${date.year}", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(text = "${date.dayOfMonth}.${date.month.value}.${date.year}", fontSize = 15.sp, fontStyle = FontStyle.Italic)
                 Text(text = transaction?.type.toString() + category, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(20.dp))
                 Row (
