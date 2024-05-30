@@ -15,12 +15,8 @@ class TransactionRepository(private val transactionDao: TransactionDao): BaseRep
 
     override suspend fun getOneStream(id: Int): Flow<Transaction?> = transactionDao.getTransaction(id)
 
-    fun getTransactions(): Flow<List<Transaction?>> = transactionDao.getTransactions()
+    fun getTransactions(userID: Int): Flow<List<Transaction?>> = transactionDao.getTransactions(userID)
 
-    fun getTotal(): Flow<Double> = transactionDao.getTotal()
-    fun getTotalForType(type: String): Flow<Double> = transactionDao.getTotalForType(type)
-    fun getTotalForCategory(category: String): Flow<Double> = transactionDao.getTotalForCategory(category)
-    fun getTransactionsByType(type: String): Flow<List<Transaction?>> = transactionDao.getTransactionsByType(type)
-    fun getTransactionsByCategory(category: String): Flow<List<Transaction?>> = transactionDao.getTransactionsByCategory(category)
-    fun getTotalForCategoryAndType(category: String, type: String): Flow<Double> = transactionDao.getTotalForCategoryAndType(category, type)
+    fun getTotalForType(type: String, userID: Int): Flow<Double> = transactionDao.getTotalForType(type, userID)
+
 }

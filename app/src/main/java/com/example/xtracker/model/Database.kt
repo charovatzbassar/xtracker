@@ -5,11 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.xtracker.model.dao.TransactionDao
+import com.example.xtracker.model.dao.UserDao
 import com.example.xtracker.model.models.Transaction
+import com.example.xtracker.model.models.User
 
-@Database(entities = [Transaction::class], version = 1, exportSchema = false)
+@Database(entities = [Transaction::class, User::class], version = 1, exportSchema = false)
 abstract class XTrackerDatabase: RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
+    abstract fun userDao(): UserDao
 
     companion object{
         @Volatile
