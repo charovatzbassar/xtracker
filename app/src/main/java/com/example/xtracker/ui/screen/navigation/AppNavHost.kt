@@ -14,6 +14,8 @@ import com.example.xtracker.model.TransactionType
 import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.screen.EditEntryScreen
+import com.example.xtracker.ui.screen.LoginScreen
+import com.example.xtracker.ui.screen.RegisterScreen
 import com.example.xtracker.ui.screen.TransactionsScreen
 import com.example.xtracker.viewModel.TransactionViewModel
 import com.example.xtracker.viewModel.UserViewModel
@@ -21,7 +23,7 @@ import com.example.xtracker.viewModel.UserViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, transactionViewModel: TransactionViewModel, userViewModel: UserViewModel, innerPadding: PaddingValues) {
-    NavHost(navController = navController, startDestination = "dashboard", modifier = androidx.compose.ui.Modifier.padding(
+    NavHost(navController = navController, startDestination = "login", modifier = androidx.compose.ui.Modifier.padding(
         innerPadding
     )) {
         composable("dashboard") {
@@ -51,10 +53,10 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
             userViewModel.logout()
         }
         composable("login") {
-
+            LoginScreen()
         }
         composable("register") {
-
+            RegisterScreen()
         }
     }
 }

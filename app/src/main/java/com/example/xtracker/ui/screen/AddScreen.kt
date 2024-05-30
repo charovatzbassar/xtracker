@@ -106,7 +106,7 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
                         val currentDate = LocalDateTime.now().format(formatter)
                         val regex = "^(?!\\.)[0-9]*\\.?[0-9]+$".toRegex()
                         if (regex.matches(amount)) {
-                            val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, category = selectedCategory)
+                            val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, category = selectedCategory, userID = 0)
                             transactionViewModel!!.addTransaction(newTransaction)
 
                             Text("Transaction added successfully!")

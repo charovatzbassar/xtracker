@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.xtracker.R
 
-@Preview
 @Composable
 fun RegisterScreen() {
     Column(

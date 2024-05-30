@@ -60,7 +60,6 @@ fun LoginScreen(){
                 Text(text = "Password")
             },
             isError = false,
-            //trailingIcon = {  Icon(painter = painterResource(id = Icons.Default.Create), contentDescription = "") }
         )
 
         Spacer(modifier = Modifier.size(width = 0.dp, height = 5.dp))
