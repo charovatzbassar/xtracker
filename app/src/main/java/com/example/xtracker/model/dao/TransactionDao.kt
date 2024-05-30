@@ -21,27 +21,13 @@ interface TransactionDao {
     @Delete
     suspend fun delete(transaction: Transaction)
 
-    @Query("SELECT * FROM `Transaction` ORDER BY transactionID DESC;")
-    fun getTransactions(): Flow<List<Transaction>>
+    @Query("SELECT * FROM `Transaction` WHERE userID = :userID ORDER BY transactionID DESC;")
+    fun getTransactions(userID: Int): Flow<List<Transaction>>
 
     @Query("SELECT * FROM `Transaction` WHERE transactionID = :id")
     fun getTransaction(id: Int): Flow<Transaction>
 
-    @Query("SELECT * FROM `Transaction` WHERE type = :type")
-    fun getTransactionsByType(type: String): Flow<List<Transaction>>
+    @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE type = :type AND userID = :userID")
+    fun getTotalForType(type: String, userID: Int): Flow<Double>
 
-    @Query("SELECT * FROM `Transaction` WHERE category = :category")
-    fun getTransactionsByCategory(category: String): Flow<List<Transaction>>
-
-    @Query("SELECT SUM(amount) as total FROM `Transaction`")
-    fun getTotal(): Flow<Double>
-
-    @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE type = :type")
-    fun getTotalForType(type: String): Flow<Double>
-
-    @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE category = :category")
-    fun getTotalForCategory(category: String): Flow<Double>
-
-    @Query("SELECT SUM(amount) as total FROM `Transaction` WHERE category = :category AND type = :type")
-    fun getTotalForCategoryAndType(category: String, type: String): Flow<Double>
 }

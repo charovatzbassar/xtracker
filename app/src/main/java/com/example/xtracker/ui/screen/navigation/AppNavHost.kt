@@ -48,7 +48,7 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
 
         }
         composable("logout") {
-
+            userViewModel.logout()
         }
         composable("login") {
 

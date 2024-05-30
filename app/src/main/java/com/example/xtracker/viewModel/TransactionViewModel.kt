@@ -12,7 +12,7 @@ import com.example.xtracker.model.repositories.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
+class TransactionViewModel(private val transactionRepository: TransactionRepository, userID: Int): ViewModel() {
     var transactionUIState by mutableStateOf(TransactionUIState())
     private set
     var totalIncomeState by mutableDoubleStateOf(0.0)
@@ -24,7 +24,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     init {
         viewModelScope.launch {
-            transactionRepository.getTransactions().collect {
+            transactionRepository.getTransactions(userID).collect {
                 transactions ->
                 transactionUIState = transactionUIState.copy(
                     transactions = transactions.map { it?.toTransactionDetails() }
@@ -33,16 +33,16 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         }
     }
 
-    fun getTotalForType(type: String) {
+    fun getTotalForType(type: String, userID: Int) {
         viewModelScope.launch {
             when (type) {
-                "Expenses" -> transactionRepository.getTotalForType(TransactionType.EXPENSES.type).collect {
+                "Expenses" -> transactionRepository.getTotalForType(TransactionType.EXPENSES.type, userID).collect {
                         totalExpenses -> totalExpenseState = totalExpenses
                 }
-                "Savings" -> transactionRepository.getTotalForType(TransactionType.SAVINGS.type).collect {
+                "Savings" -> transactionRepository.getTotalForType(TransactionType.SAVINGS.type, userID).collect {
                         totalSavings -> totalSavingState = totalSavings
                 }
-                "Income" -> transactionRepository.getTotalForType(TransactionType.INCOME.type).collect {
+                "Income" -> transactionRepository.getTotalForType(TransactionType.INCOME.type, userID).collect {
                         totalIncome -> totalIncomeState = totalIncome
                 }
             }
