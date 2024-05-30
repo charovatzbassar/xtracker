@@ -19,6 +19,8 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
@@ -45,21 +47,27 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             XTrackerTheme {
+                var isLoggedIn = remember {
+                    mutableStateOf(false)
+                }
+
                 val scope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                val userViewModel = UserViewModel(userRepository = container.userRepository, navController = navController)
+                val userViewModel = UserViewModel(userRepository = container.userRepository, navController = navController, isLoggedIn = isLoggedIn)
 
                 val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userID = userViewModel.userDetailsState.userID)
                 transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, userViewModel.userDetailsState.userID)
                 transactionViewModel.getTotalForType(TransactionType.INCOME.type, userViewModel.userDetailsState.userID)
                 transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, userViewModel.userDetailsState.userID)
 
+
+
                     ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
-                                if (userViewModel.isLoggedIn()) {
+                                if (isLoggedIn.value) {
                                     NavigationDrawer(
                                         items = listOf(
                                             MenuItem(
@@ -119,7 +127,7 @@ class MainActivity : ComponentActivity() {
                     content = {
                         Scaffold(
                             topBar = {
-                                if (userViewModel.isLoggedIn()) {
+                                if (isLoggedIn.value) {
                                     MyAppBar(
                                         onNavigationIconClick = {
                                             scope.launch {
