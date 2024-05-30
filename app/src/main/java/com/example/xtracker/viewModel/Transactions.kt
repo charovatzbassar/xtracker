@@ -13,7 +13,8 @@ fun TransactionDetails.toTransaction(): Transaction = Transaction(
     amount = amount,
     date = date,
     type = type,
-    category = category
+    category = category,
+    userID = userID
 )
 
 fun Transaction.toTransactionDetails() = TransactionDetails(
@@ -21,14 +22,6 @@ fun Transaction.toTransactionDetails() = TransactionDetails(
     amount = amount,
     date = date,
     type = type,
-    category = category
-)
-
-
-data class Transaction(
-    val transactionID: Int,
-    val amount: Double,
-    val date: String,
-    val type: String,
-    val categoryID: Int
+    category = category,
+    userID = userID
 )

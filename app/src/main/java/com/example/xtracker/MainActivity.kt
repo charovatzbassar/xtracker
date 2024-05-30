@@ -6,20 +6,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.xtracker.model.AppContainer
@@ -30,6 +30,7 @@ import com.example.xtracker.ui.composable.NavigationDrawer
 import com.example.xtracker.ui.screen.navigation.AppNavHost
 import com.example.xtracker.ui.theme.XTrackerTheme
 import com.example.xtracker.viewModel.TransactionViewModel
+import com.example.xtracker.viewModel.UserViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
+        val userViewModel = UserViewModel(userRepository = container.userRepository)
         transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
         transactionViewModel.getTotalForType(TransactionType.INCOME.type)
         transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
@@ -88,6 +90,18 @@ class MainActivity : ComponentActivity() {
                                             contentDescription = "Go to add entry screen",
                                             icon = Icons.Default.Add
                                         ),
+                                        MenuItem(
+                                            id = "profile",
+                                            title = "Profile",
+                                            contentDescription = "Go to profile screen",
+                                            icon = Icons.Default.Person
+                                        ),
+                                        MenuItem(
+                                            id = "logout",
+                                            title = "Log out",
+                                            contentDescription = "Logout the user",
+                                            icon = Icons.Default.ExitToApp
+                                        ),
                                     ),
                                     onItemClick = {
                                         navController.navigate(it.id)
@@ -114,6 +128,7 @@ class MainActivity : ComponentActivity() {
                                 AppNavHost(
                                     navController = navController,
                                     transactionViewModel = transactionViewModel,
+                                    userViewModel = userViewModel,
                                     innerPadding = innerPadding
                                 )
                             }

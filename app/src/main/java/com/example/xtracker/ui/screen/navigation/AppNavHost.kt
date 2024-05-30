@@ -16,10 +16,11 @@ import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.screen.EditEntryScreen
 import com.example.xtracker.ui.screen.TransactionsScreen
 import com.example.xtracker.viewModel.TransactionViewModel
+import com.example.xtracker.viewModel.UserViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavHost(navController: NavHostController, transactionViewModel: TransactionViewModel, innerPadding: PaddingValues) {
+fun AppNavHost(navController: NavHostController, transactionViewModel: TransactionViewModel, userViewModel: UserViewModel, innerPadding: PaddingValues) {
     NavHost(navController = navController, startDestination = "dashboard", modifier = androidx.compose.ui.Modifier.padding(
         innerPadding
     )) {
@@ -42,6 +43,18 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
         composable("edit/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!.toInt()
             EditEntryScreen(transactionViewModel = transactionViewModel, navController = navController, id = id)
+        }
+        composable("profile") {
+
+        }
+        composable("logout") {
+
+        }
+        composable("login") {
+
+        }
+        composable("register") {
+
         }
     }
 }
