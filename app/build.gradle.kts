@@ -64,10 +64,10 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
 
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")

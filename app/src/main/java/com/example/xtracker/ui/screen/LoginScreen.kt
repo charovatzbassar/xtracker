@@ -13,16 +13,31 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.xtracker.R
+import com.example.xtracker.viewModel.UserDetails
+import com.example.xtracker.viewModel.UserViewModel
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(userViewModel: UserViewModel, navController: NavHostController){
+    val username = remember {
+        mutableStateOf("")
+    }
+
+    val password = remember {
+        mutableStateOf("")
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,17 +45,14 @@ fun LoginScreen(){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Image(
-            painter = painterResource(id = R.drawable.logo128px),
-            contentDescription = "",
-            modifier = Modifier.size(width = 100.dp, height = 100.dp)
-        )
+        Text(text = "Login to XTracker!")
+
 
         Spacer(modifier = Modifier.size(width = 0.dp, height = 20.dp))
 
         TextField(
-            value = "",
-            onValueChange = { /* TODO */ },
+            value = username.value,
+            onValueChange = { value -> username.value = value },
             enabled = true,
             label = {
                 Text(text = "Username")
@@ -54,18 +66,21 @@ fun LoginScreen(){
         Spacer(modifier = Modifier.size(width = 0.dp, height = 20.dp))
 
         TextField(
-            value = "",
-            onValueChange = { /* TODO */},
+            value = password.value,
+            onValueChange = { value -> password.value = value },
             label = {
                 Text(text = "Password")
             },
+            visualTransformation = PasswordVisualTransformation(),
             isError = false,
         )
 
         Spacer(modifier = Modifier.size(width = 0.dp, height = 5.dp))
 
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                      navController.navigate("register")
+            },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(text = "Do not have an account?")
@@ -73,7 +88,11 @@ fun LoginScreen(){
 
         Spacer(modifier = Modifier.size(width = 0.dp, height = 20.dp))
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {
+            if (username.value != "" && password.value != "") {
+                userViewModel.login(username.value, password.value)
+            }
+        }) {
             Text(
                 text = "Login",
                 fontSize = 20.sp,

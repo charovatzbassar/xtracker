@@ -5,11 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.xtracker.model.models.User
 import com.example.xtracker.model.repositories.UserRepository
 import kotlinx.coroutines.launch
 
-class UserViewModel(private val userRepository: UserRepository): ViewModel() {
+class UserViewModel(private val userRepository: UserRepository, private val navController: NavHostController): ViewModel() {
     var userDetailsState by mutableStateOf(UserDetails())
     private set
 
@@ -17,31 +18,29 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
         return userDetailsState != UserDetails()
     }
 
-    fun login(user: UserDetails) {
+    fun login(username: String, password: String) {
         viewModelScope.launch {
-            val newUser = user.toUser()
-            var foundUser: User? = null
-            userRepository.getUserByEmail(newUser.email).collect { user ->
-                foundUser = user
+            userRepository.getUserByUsernameAndPassword(username, password).collect { user ->
+                if (user != null) {
+                    userDetailsState = user.toUserDetails()
+                    navController.navigate("dashboard")
+
+                }
             }
 
-            if (foundUser != null) {
-                userDetailsState = newUser.toUserDetails()
-            }
+
         }
     }
 
     fun register(user: UserDetails) {
         viewModelScope.launch {
             val newUser = user.toUser()
-            var foundUser: User? = null
             userRepository.getUserByEmail(newUser.email).collect { user ->
-                foundUser = user
-            }
-
-            if (foundUser == null) {
-                userRepository.insert(newUser)
-                userDetailsState = newUser.toUserDetails()
+                if (user == null) {
+                    userRepository.insert(newUser)
+                    userDetailsState = newUser.toUserDetails()
+                    navController.navigate("dashboard")
+                }
             }
         }
     }

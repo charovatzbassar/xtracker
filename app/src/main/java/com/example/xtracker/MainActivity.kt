@@ -39,12 +39,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         container = AppDataContainer(this)
         installSplashScreen()
-        val userViewModel = UserViewModel(userRepository = container.userRepository)
 
-        val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userViewModel.userDetailsState.userID)
-        transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, userViewModel.userDetailsState.userID)
-        transactionViewModel.getTotalForType(TransactionType.INCOME.type, userViewModel.userDetailsState.userID)
-        transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, userViewModel.userDetailsState.userID)
 
         super.onCreate(savedInstanceState)
 
@@ -53,76 +48,86 @@ class MainActivity : ComponentActivity() {
                 val scope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val userViewModel = UserViewModel(userRepository = container.userRepository, navController = navController)
+
+                val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userID = userViewModel.userDetailsState.userID)
+                transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, userViewModel.userDetailsState.userID)
+                transactionViewModel.getTotalForType(TransactionType.INCOME.type, userViewModel.userDetailsState.userID)
+                transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, userViewModel.userDetailsState.userID)
 
                     ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
-                                NavigationDrawer(
-                                    items = listOf(
-                                        MenuItem(
-                                            id = "dashboard",
-                                            title = "Dashboard",
-                                            contentDescription = "Go to dashboard screen",
-                                            icon = Icons.Default.Home
+                                if (userViewModel.isLoggedIn()) {
+                                    NavigationDrawer(
+                                        items = listOf(
+                                            MenuItem(
+                                                id = "dashboard",
+                                                title = "Dashboard",
+                                                contentDescription = "Go to dashboard screen",
+                                                icon = Icons.Default.Home
+                                            ),
+                                            MenuItem(
+                                                id = "income",
+                                                title = "Income",
+                                                contentDescription = "Go to income screen",
+                                                icon = Icons.Default.KeyboardArrowUp
+                                            ),
+                                            MenuItem(
+                                                id = "expenses",
+                                                title = "Expenses",
+                                                contentDescription = "Go to expenses screen",
+                                                icon = Icons.Default.KeyboardArrowDown
+                                            ),
+                                            MenuItem(
+                                                id = "savings",
+                                                title = "Savings",
+                                                contentDescription = "Go to savings screen",
+                                                icon = Icons.Default.Lock
+                                            ),
+                                            MenuItem(
+                                                id = "add",
+                                                title = "Add Transaction",
+                                                contentDescription = "Go to add entry screen",
+                                                icon = Icons.Default.Add
+                                            ),
+                                            MenuItem(
+                                                id = "profile",
+                                                title = "Profile",
+                                                contentDescription = "Go to profile screen",
+                                                icon = Icons.Default.Person
+                                            ),
+                                            MenuItem(
+                                                id = "logout",
+                                                title = "Log out",
+                                                contentDescription = "Logout the user",
+                                                icon = Icons.Default.ExitToApp
+                                            ),
                                         ),
-                                        MenuItem(
-                                            id = "income",
-                                            title = "Income",
-                                            contentDescription = "Go to income screen",
-                                            icon = Icons.Default.KeyboardArrowUp
-                                        ),
-                                        MenuItem(
-                                            id = "expenses",
-                                            title = "Expenses",
-                                            contentDescription = "Go to expenses screen",
-                                            icon = Icons.Default.KeyboardArrowDown
-                                        ),
-                                        MenuItem(
-                                            id = "savings",
-                                            title = "Savings",
-                                            contentDescription = "Go to savings screen",
-                                            icon = Icons.Default.Lock
-                                        ),
-                                        MenuItem(
-                                            id = "add",
-                                            title = "Add Transaction",
-                                            contentDescription = "Go to add entry screen",
-                                            icon = Icons.Default.Add
-                                        ),
-                                        MenuItem(
-                                            id = "profile",
-                                            title = "Profile",
-                                            contentDescription = "Go to profile screen",
-                                            icon = Icons.Default.Person
-                                        ),
-                                        MenuItem(
-                                            id = "logout",
-                                            title = "Log out",
-                                            contentDescription = "Logout the user",
-                                            icon = Icons.Default.ExitToApp
-                                        ),
-                                    ),
-                                    onItemClick = {
-                                        navController.navigate(it.id)
-                                        scope.launch {
-                                            drawerState.close()
+                                        onItemClick = {
+                                            navController.navigate(it.id)
+                                            scope.launch {
+                                                drawerState.close()
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             }
 
                     },
                     content = {
                         Scaffold(
                             topBar = {
-                                MyAppBar(
-                                    onNavigationIconClick = {
-                                        scope.launch {
-                                            drawerState.open()
+                                if (userViewModel.isLoggedIn()) {
+                                    MyAppBar(
+                                        onNavigationIconClick = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             },
                             content = { innerPadding ->
                                 AppNavHost(

@@ -14,4 +14,6 @@ class UserRepository(private val userDao: UserDao): BaseRepository<User> {
     override suspend fun getOneStream(id: Int): Flow<User?> = userDao.getUserByID(id)
 
     fun getUserByEmail(email: String): Flow<User?> = userDao.getUserByEmail(email)
+
+    fun getUserByUsernameAndPassword(username: String, password: String): Flow<User?> = userDao.getUserByUsernameAndPassword(username, password)
 }

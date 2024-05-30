@@ -27,7 +27,6 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
         innerPadding
     )) {
         composable("dashboard") {
-            println(transactionViewModel.totalIncomeState)
             Dashboard(navController = navController, transactionViewModel = transactionViewModel)
         }
         composable("expenses") {
@@ -51,12 +50,13 @@ fun AppNavHost(navController: NavHostController, transactionViewModel: Transacti
         }
         composable("logout") {
             userViewModel.logout()
+            navController.navigate("login")
         }
         composable("login") {
-            LoginScreen()
+            LoginScreen(userViewModel = userViewModel, navController = navController)
         }
         composable("register") {
-            RegisterScreen()
+            RegisterScreen(userViewModel = userViewModel, navController = navController)
         }
     }
 }
