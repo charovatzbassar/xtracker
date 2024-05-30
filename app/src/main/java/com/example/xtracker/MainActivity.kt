@@ -19,6 +19,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,6 +33,7 @@ import com.example.xtracker.ui.composable.NavigationDrawer
 import com.example.xtracker.ui.screen.navigation.AppNavHost
 import com.example.xtracker.ui.theme.XTrackerTheme
 import com.example.xtracker.viewModel.TransactionViewModel
+import com.example.xtracker.viewModel.UserDetails
 import com.example.xtracker.viewModel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -47,20 +49,23 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             XTrackerTheme {
-                var isLoggedIn = remember {
+                val isLoggedIn = remember {
                     mutableStateOf(false)
+                }
+                val user: MutableState<UserDetails?> = remember {
+                    mutableStateOf(null)
                 }
 
                 val scope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                val userViewModel = UserViewModel(userRepository = container.userRepository, navController = navController, isLoggedIn = isLoggedIn)
+                val userViewModel = UserViewModel(userRepository = container.userRepository, navController = navController, isLoggedIn = isLoggedIn, userState = user)
 
-                val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userID = userViewModel.userDetailsState.userID)
-                transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, userViewModel.userDetailsState.userID)
-                transactionViewModel.getTotalForType(TransactionType.INCOME.type, userViewModel.userDetailsState.userID)
-                transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, userViewModel.userDetailsState.userID)
 
+                val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userID = user.value?.userID ?: 0)
+                transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, user.value?.userID ?: 0)
+                transactionViewModel.getTotalForType(TransactionType.INCOME.type, user.value?.userID ?: 0)
+                transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, user.value?.userID ?: 0)
 
 
                     ModalNavigationDrawer(
@@ -114,7 +119,12 @@ class MainActivity : ComponentActivity() {
                                             ),
                                         ),
                                         onItemClick = {
-                                            navController.navigate(it.id)
+                                            if (it.id != "logout") {
+                                                navController.navigate(it.id)
+                                            } else {
+                                                userViewModel.logout()
+                                                navController.navigate("login")
+                                            }
                                             scope.launch {
                                                 drawerState.close()
                                             }
@@ -142,6 +152,7 @@ class MainActivity : ComponentActivity() {
                                     navController = navController,
                                     transactionViewModel = transactionViewModel,
                                     userViewModel = userViewModel,
+                                    userState = user,
                                     innerPadding = innerPadding
                                 )
                             }

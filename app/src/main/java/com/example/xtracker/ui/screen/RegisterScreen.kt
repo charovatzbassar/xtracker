@@ -113,7 +113,8 @@ fun RegisterScreen(userViewModel: UserViewModel, navController: NavHostControlle
 
         Button(
             onClick = {
-                if (username.value != "" && password.value != "") {
+                val emailRegex = "^[^@]+@[^@]+\$".toRegex()
+                if (username.value != "" && password.value != "" && emailRegex.matches(email.value)) {
                     val newUser = UserDetails(username = username.value, email = email.value, password = password.value)
                     userViewModel.register(newUser)
                 }

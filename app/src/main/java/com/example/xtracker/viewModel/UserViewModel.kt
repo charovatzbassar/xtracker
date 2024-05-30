@@ -11,16 +11,14 @@ import com.example.xtracker.model.models.User
 import com.example.xtracker.model.repositories.UserRepository
 import kotlinx.coroutines.launch
 
-class UserViewModel(private val userRepository: UserRepository, private val navController: NavHostController, private val isLoggedIn: MutableState<Boolean>): ViewModel() {
-    var userDetailsState by mutableStateOf(UserDetails())
-    private set
 
+class UserViewModel(private val userRepository: UserRepository, private val navController: NavHostController, private val isLoggedIn: MutableState<Boolean>, private val userState: MutableState<UserDetails?>): ViewModel() {
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
             userRepository.getUserByUsernameAndPassword(username, password).collect { user ->
                 if (user != null) {
-                    userDetailsState = user.toUserDetails()
+                    userState.value = user.toUserDetails()
                     isLoggedIn.value = true
                     navController.navigate("dashboard")
                 }
@@ -36,16 +34,14 @@ class UserViewModel(private val userRepository: UserRepository, private val navC
             userRepository.getUserByEmail(newUser.email).collect { user ->
                 if (user == null) {
                     userRepository.insert(newUser)
-                    userDetailsState = newUser.toUserDetails()
-                    isLoggedIn.value = true
-                    navController.navigate("dashboard")
+                    login(newUser.username, newUser.password)
                 }
             }
         }
     }
 
     fun logout() {
-        userDetailsState = UserDetails()
+        userState.value = UserDetails()
         isLoggedIn.value = false
     }
 }

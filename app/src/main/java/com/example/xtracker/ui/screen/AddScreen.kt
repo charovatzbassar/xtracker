@@ -32,13 +32,14 @@ import com.example.xtracker.model.Category
 import com.example.xtracker.model.TransactionType
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.TransactionViewModel
+import com.example.xtracker.viewModel.UserViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
+fun AddEntryScreen(transactionViewModel: TransactionViewModel?, userViewModel: UserViewModel, userID: Int) {
     var selectedType by remember { mutableStateOf("Income") }
     var amount by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Food") }
@@ -46,6 +47,9 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
     val categories = Category.entries.map { it.category }
 
     val scope = rememberCoroutineScope()
+
+    println(userID)
+
 
     Column(
         modifier = Modifier
@@ -106,7 +110,7 @@ fun AddEntryScreen(transactionViewModel: TransactionViewModel?) {
                         val currentDate = LocalDateTime.now().format(formatter)
                         val regex = "^(?!\\.)[0-9]*\\.?[0-9]+$".toRegex()
                         if (regex.matches(amount)) {
-                            val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, category = selectedCategory, userID = 0)
+                            val newTransaction = Transaction(amount = amount.toDouble(), type = selectedType, date = currentDate, category = selectedCategory, userID = userID)
                             transactionViewModel!!.addTransaction(newTransaction)
 
                             Text("Transaction added successfully!")

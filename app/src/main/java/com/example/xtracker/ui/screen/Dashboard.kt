@@ -38,6 +38,7 @@ fun Dashboard(navController: NavHostController, transactionViewModel: Transactio
 
     val transactions = transactionViewModel!!.transactionUIState.transactions
 
+
     Column (
         modifier = Modifier
             .fillMaxSize()

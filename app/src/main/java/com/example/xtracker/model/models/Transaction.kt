@@ -8,7 +8,12 @@ import com.example.xtracker.model.TransactionType
 import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "Transaction", foreignKeys = [
-    ForeignKey(entity = User::class, childColumns = ["userID"], parentColumns = ["userID"])
+    ForeignKey(
+        entity = User::class,
+        parentColumns = ["userID"],
+        childColumns = ["userID"],
+        onDelete = ForeignKey.CASCADE
+    )
 ])
 data class Transaction(
     @PrimaryKey(autoGenerate = true)

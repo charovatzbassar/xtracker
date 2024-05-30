@@ -33,11 +33,12 @@ import com.example.xtracker.model.Category
 import com.example.xtracker.model.TransactionType
 import com.example.xtracker.model.models.Transaction
 import com.example.xtracker.viewModel.TransactionViewModel
+import com.example.xtracker.viewModel.UserViewModel
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun EditEntryScreen(transactionViewModel: TransactionViewModel?, navController: NavHostController, id: Int) {
+fun EditEntryScreen(transactionViewModel: TransactionViewModel?, userViewModel: UserViewModel, navController: NavHostController, id: Int, userID: Int) {
 
     var transaction: Transaction? by remember {
         mutableStateOf(null)
@@ -121,7 +122,7 @@ fun EditEntryScreen(transactionViewModel: TransactionViewModel?, navController: 
                         val regex = "^(?!\\.)[0-9]*\\.?[0-9]+$".toRegex()
 
                         if (amount?.let { regex.matches(it) } == true) {
-                            val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> selectedCategory?.let { it4 -> Transaction(amount = it.toDouble(), type = it1, date = it2, category = it4, transactionID = it3, userID = 0) } } } } }
+                            val newTransaction = amount?.let { selectedType?.let { it1 -> transaction?.date?.let { it2 -> transaction?.transactionID?.let { it3 -> selectedCategory?.let { it4 -> Transaction(amount = it.toDouble(), type = it1, date = it2, category = it4, transactionID = it3, userID = userID) } } } } }
                             transactionViewModel!!.editTransaction(newTransaction!!)
 
                             Text("Transaction edited successfully!")
