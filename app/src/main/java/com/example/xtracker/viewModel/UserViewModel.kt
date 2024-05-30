@@ -14,7 +14,7 @@ class UserViewModel(private val userRepository: UserRepository): ViewModel() {
     private set
 
     fun isLoggedIn(): Boolean {
-        return userDetailsState == UserDetails()
+        return userDetailsState != UserDetails()
     }
 
     fun login(user: UserDetails) {

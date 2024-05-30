@@ -39,12 +39,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         container = AppDataContainer(this)
         installSplashScreen()
-
-        val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository)
         val userViewModel = UserViewModel(userRepository = container.userRepository)
-        transactionViewModel.getTotalForType(TransactionType.EXPENSES.type)
-        transactionViewModel.getTotalForType(TransactionType.INCOME.type)
-        transactionViewModel.getTotalForType(TransactionType.SAVINGS.type)
+
+        val transactionViewModel = TransactionViewModel(transactionRepository = container.transactionRepository, userViewModel.userDetailsState.userID)
+        transactionViewModel.getTotalForType(TransactionType.EXPENSES.type, userViewModel.userDetailsState.userID)
+        transactionViewModel.getTotalForType(TransactionType.INCOME.type, userViewModel.userDetailsState.userID)
+        transactionViewModel.getTotalForType(TransactionType.SAVINGS.type, userViewModel.userDetailsState.userID)
 
         super.onCreate(savedInstanceState)
 
