@@ -12,7 +12,7 @@ import com.example.xtracker.model.repositories.UserRepository
 import kotlinx.coroutines.launch
 
 
-class UserViewModel(private val userRepository: UserRepository, private val navController: NavHostController, private val isLoggedIn: MutableState<Boolean>, private val userState: MutableState<UserDetails?>): ViewModel() {
+class UserViewModel(private val userRepository: UserRepository, private val navController: NavHostController, private val isLoggedIn: MutableState<Boolean>, val userState: MutableState<UserDetails?>): ViewModel() {
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
