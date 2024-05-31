@@ -16,6 +16,7 @@ import com.example.xtracker.ui.screen.AddEntryScreen
 import com.example.xtracker.ui.screen.Dashboard
 import com.example.xtracker.ui.screen.EditEntryScreen
 import com.example.xtracker.ui.screen.LoginScreen
+import com.example.xtracker.ui.screen.ProfileScreen
 import com.example.xtracker.ui.screen.RegisterScreen
 import com.example.xtracker.ui.screen.TransactionsScreen
 import com.example.xtracker.viewModel.TransactionViewModel
@@ -54,7 +55,7 @@ fun AppNavHost(
             userState.value?.userID?.let { EditEntryScreen(transactionViewModel = transactionViewModel, userViewModel = userViewModel, navController = navController, id = id, userID = it) }
         }
         composable("profile") {
-
+            ProfileScreen(userViewModel = userViewModel, navController = navController)
         }
         composable("login") {
             LoginScreen(userViewModel = userViewModel, navController = navController)
